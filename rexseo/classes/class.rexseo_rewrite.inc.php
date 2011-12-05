@@ -396,9 +396,9 @@ function rexseo_generate_pathlist($params)
     require_once (REXSEO_PATHLIST);
   }
 
-  // EXTENSION POINT "REXSEO_PATHLIST_BEFORE_REBULID"
+  // EXTENSION POINT "REXSEO_PATHLIST_BEFORE_REBUILD"
   $subject = array('REXSEO_IDS'=>$REXSEO_IDS,'REXSEO_URLS'=>$REXSEO_URLS);
-  rex_register_extension_point('REXSEO_PATHLIST_BEFORE_REBULID',$subject);
+  rex_register_extension_point('REXSEO_PATHLIST_BEFORE_REBUILD',$subject);
 
   $REXSEO_IDS  = !isset($REXSEO_IDS)  ? array() : $REXSEO_IDS;
   $REXSEO_URLS = !isset($REXSEO_URLS) ? array() : $REXSEO_URLS;
