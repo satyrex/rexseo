@@ -12,51 +12,59 @@
  */
 
 if (rex_request('rexseo_func')!="") {
-	$path = $REX['INCLUDE_PATH'].'/addons/'.$myself;
+  $path = $REX['INCLUDE_PATH'].'/addons/'.$myself;
 
-	switch (rex_request('rexseo_func')) {
-		case "googlesitemap":
-			include $path.'/extensions/googlesitemap.inc.php';
-			die();
-		break;
+  switch (rex_request('rexseo_func')) {
+    case "googlesitemap":
+      require_once $REX['INCLUDE_PATH'].'/addons/rexseo/classes/class.rexseo_sitemap.inc.php';
 
-		case "robots":
-			include $path.'/extensions/robots.inc.php';
-			die();
-		break;
+      $map = new rexseo_sitemap;
+      $map = $map->get();
 
-		case "backend.css":
-			header('Content-Type:text/css');
-			echo file_get_contents($path.'/files/backend.css');
-			die();
-		break;
+      header('Content-Type: application/xml');
+      header('Content-Length: '.strlen($map));
+      echo $map;
 
-		case "jsopenwin.gif":
-			header('Content-Type:image/gif');
-			echo file_get_contents($path.'/files/jsopenwin.gif');
-			die();
-		break;
+      die();
+    break;
 
-		case "jquery.highlight-3.yui.js":
-			header('Content-Type:text/javascript');
-			echo file_get_contents($path.'/files/jquery.highlight-3.yui.js');
-			die();
-		break;
+    case "robots":
+      include $path.'/extensions/robots.inc.php';
+      die();
+    break;
 
-		case "jquery.autogrow-textarea.js":
-			header('Content-Type:text/javascript');
-			echo file_get_contents($path.'/files/jquery.autogrow-textarea.js');
-			die();
-		break;
+    case "backend.css":
+      header('Content-Type:text/css');
+      echo file_get_contents($path.'/files/backend.css');
+      die();
+    break;
 
-		case "jquery.scrollTo-1.4.2-min.js":
-			header('Content-Type:text/javascript');
-			echo file_get_contents($path.'/files/jquery.scrollTo-1.4.2-min.js');
-			die();
-		break;
+    case "jsopenwin.gif":
+      header('Content-Type:image/gif');
+      echo file_get_contents($path.'/files/jsopenwin.gif');
+      die();
+    break;
 
-		default:
-		break;
-	}
+    case "jquery.highlight-3.yui.js":
+      header('Content-Type:text/javascript');
+      echo file_get_contents($path.'/files/jquery.highlight-3.yui.js');
+      die();
+    break;
+
+    case "jquery.autogrow-textarea.js":
+      header('Content-Type:text/javascript');
+      echo file_get_contents($path.'/files/jquery.autogrow-textarea.js');
+      die();
+    break;
+
+    case "jquery.scrollTo-1.4.2-min.js":
+      header('Content-Type:text/javascript');
+      echo file_get_contents($path.'/files/jquery.scrollTo-1.4.2-min.js');
+      die();
+    break;
+
+    default:
+    break;
+  }
 }
 ?>
