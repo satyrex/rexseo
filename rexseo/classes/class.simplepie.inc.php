@@ -11146,7 +11146,7 @@ class SimplePie_Decode_HTML_Entities
 
 				if ($match !== null)
 				{
- 					$this->data = substr_replace($this->data, $entities[$match], $this->position - strlen($consumed) - 1, strlen($match) + 1);
+					$this->data = substr_replace($this->data, $entities[$match], $this->position - strlen($consumed) - 1, strlen($match) + 1);
 					$this->position += strlen($entities[$match]) - strlen($consumed) - 1;
 				}
 				break;
