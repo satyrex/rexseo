@@ -29,7 +29,14 @@ if (rex_request('rexseo_func')!="") {
     break;
 
     case "robots":
-      include $path.'/extensions/robots.inc.php';
+      require_once $REX['INCLUDE_PATH'].'/addons/rexseo/classes/class.rexseo_robots.inc.php';
+
+      $robots = new rexseo_robots;
+      $robots = $robots->get();
+
+      header('Content-Type: text/plain; charset=UTF-8');
+      header('Content-Length: '.strlen($robots));
+      echo $robots;
       die();
     break;
 
