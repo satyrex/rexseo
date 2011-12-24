@@ -4,21 +4,26 @@
 RewriteEngine On
 RewriteBase /
 
-# REDIRECT www.DOMAIN.TLD -> DOMAIN.TLD
+### SUBDOMAIN REDIRECTS
+### 1. uncomment "RewriteCond" & "RewriteRule"
+### 2. use only one(!) of the following two redirects
+### 3. replace DOMAIN.TLD with your domain
+
+### SUBDOMAIN REDIRECT www.DOMAIN.TLD -> DOMAIN.TLD
 # RewriteCond %{HTTP_HOST} ^www\.DOMAIN\.TLD$
 # RewriteRule ^(.*)$ http://DOMAIN.TLD/$1 [L,R=301]
 
-# REDIRECT *.DOMAIN.TLD -> www.DOMAIN.TLD
+### SUBDOMAIN REDIRECT *.DOMAIN.TLD -> www.DOMAIN.TLD
 # RewriteCond %{HTTP_HOST} ^DOMAIN\.TLD$
 # RewriteRule ^(.*)$ http://www.DOMAIN.TLD/$1 [L,R=301]
 
-# REDIRECT SITEMAP.XML -> SITEMAP.PHP
+### REDIRECT SITEMAP.XML -> REXSEO SITEMAP FUNCTION
 RewriteRule ^sitemap\.xml$ index.php?rexseo_func=googlesitemap [NC,L]
 
-# REDIRECT ROBOTS.TXT -> ROBOTS.PHP
+### REDIRECT ROBOTS.TXT -> REXSEO ROBOTS FUNCTION
 RewriteRule ^robots\.txt$ index.php?rexseo_func=robots [NC,L]
 
-# DON'T REWRITE DIRS/FILES
+### DON'T REWRITE DIRS/FILES
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-l
@@ -26,7 +31,7 @@ RewriteCond %{REQUEST_URI} !^redaxo/.*
 RewriteCond %{REQUEST_URI} !^files/.*
 RewriteCond %{REQUEST_URI} !^google(.*).html*
 
-# REWRITE ALL OTHER REQUESTS TO INDEX.PHP
+### REWRITE ALL OTHER REQUESTS TO INDEX.PHP
 RewriteRule ^(.*)$ index.php?%{QUERY_STRING} [L]
 
 </IfModule>
