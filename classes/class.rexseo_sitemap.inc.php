@@ -13,7 +13,8 @@
 class rexseo_sitemap
 {
   private $host;
-  private $map_articles;
+  private $mode;
+  private $db_articles;
 
 
   /**
@@ -25,7 +26,7 @@ class rexseo_sitemap
   {
     global $REX;
   
-    $map_articles = array();
+    $db_articles = array();
     $db = new rex_sql;
     $qry = 'SELECT `id`,`clang`,`updatedate`,`path`,`art_rexseo_priority`,`art_rexseo_changefreq`
             FROM `'.$REX['TABLE_PREFIX'].'article` 
@@ -33,7 +34,7 @@ class rexseo_sitemap
             OR    (`art_rexseo_sitemap_out`=\'\' AND `status`=1);';
     foreach($db->getDbArray($qry) as $art)
     {
-      $map_articles[$art['id']][$art['clang']] = array('loc'        => rex_getUrl($art['id'],$art['clang']),
+      $db_articles[$art['id']][$art['clang']] = array('loc'        => rex_getUrl($art['id'],$art['clang']),
                                                        'lastmod'    => date('Y-m-d\TH:i:s',$art['updatedate']).'+00:00',
                                                        'changefreq' => self::calc_article_changefreq($art['updatedate'],$art['art_rexseo_changefreq']),
                                                        'priority'   => self::calc_article_priority($art['id'],$art['clang'],$art['path'],$art['art_rexseo_priority'])
@@ -41,9 +42,9 @@ class rexseo_sitemap
     }
   
     // EXTENSIONPOINT REXSEO_SITEMAP_ARRAY_CREATED
-    $map_articles = rex_register_extension_point('REXSEO_SITEMAP_ARRAY_CREATED',$map_articles);
+    $db_articles = rex_register_extension_point('REXSEO_SITEMAP_ARRAY_CREATED',$db_articles);
   
-    $this->map_articles = $map_articles;
+    $this->db_articles = $db_articles;
   }
 
 
@@ -120,6 +121,7 @@ class rexseo_sitemap
     return $xml_loc;
   }
 
+
   /**
    * CONSTRUCTOR
    */
@@ -127,31 +129,54 @@ class rexseo_sitemap
   {
     global $REX;
 
-    $this->map_articles = array();
+    $this->db_articles = array();
+    $this->mode         = 'xml';
     $this->host         = rtrim($REX['SERVER'],'/');
 
     self::get_db_articles();
   }
 
 
+  /**
+   * SET HOST
+   *
+   * @param $host  (string)  http://DOMAIN.TLD
+   */
+  public function setHost($host)
+  {
+    $this->host = rtrim($host,'/');
+  }
+
+
+  /**
+   * SET MODE
+   *
+   * @param $mode  (string)  [xml|json]
+   */
+  public function setMode($mode)
+  {
+    $this->mode = $mode;
+  }
 
 
   /**
    * RETURN SITEMAP
    *
-   * @param $mode       (string) output format  [currently only xml]
-   *
-   * @return            (string) xml location fragment
+   * @return            (string) sitemap [xml|json]
    */
-  public function get($mode='xml')
+  public function get()
   {
-    switch($mode)
+    switch($this->mode)
     {
-      case'xml':
+      case'json':
+        return json_encode($this->db_articles);
+      break;
+
+      default:
         $xml_sitemap = '<?xml version="1.0" encoding="UTF-8"?>'.PHP_EOL.
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'.PHP_EOL;
 
-        foreach($this->map_articles as $id=>$clangs)
+        foreach($this->db_articles as $id=>$clangs)
         {
           foreach($clangs as $art)
           {
@@ -173,6 +198,29 @@ class rexseo_sitemap
 
         return $xml_sitemap;
     }
+  }
+
+
+  /**
+   * SEND SITEMAP
+   */
+  public function send()
+  {
+    $map = self::get();
+
+    switch($this->mode)
+    {
+      case'json':
+        header('Content-Type: application/json');
+      break;
+      case'xml':
+        header('Content-Type: application/xml');
+      break;
+      default:
+    }
+    header('Content-Length: '.strlen($map));
+    echo $map;
+    die();
   }
 
 

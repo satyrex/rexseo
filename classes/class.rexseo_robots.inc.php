@@ -15,29 +15,6 @@ class rexseo_robots
   private $host;
   private $robots_txt;
 
-  /**
-   * ASSEMBLE ROBOTS.TXT
-   *
-   * @return  (string) robots.txt
-   */
-  private function assemble_robots()
-  {
-    global $REX;
-
-    if (isset ($REX['ADDON']['rexseo']['settings']['robots']) && 
-               $REX['ADDON']['rexseo']['settings']['robots'] != '')
-    {
-      $this->robots_txt = $REX['ADDON']['rexseo']['settings']['robots'];
-    }
-    else
-    {
-      $this->robots_txt = 'User-agent: *
-      Disallow:';
-    }
-    
-    $this->robots_txt .= PHP_EOL.'Sitemap: '.$this->host.'sitemap.xml';
-  }
-
 
   /**
    * CONSTRUCTOR
@@ -46,8 +23,41 @@ class rexseo_robots
   {
     global $REX;
     $this->host = $REX['SERVER'];
+    $this->robots_txt = 'User-agent: *
+    Disallow:';
+  }
 
-    self::assemble_robots();
+
+  /**
+   * SET HOST
+   *
+   * @param $host  (string)  http://DOMAIN.TLD
+   */
+  public function setHost($host)
+  {
+    $this->host = rtrim($host,'/');
+  }
+
+
+  /**
+   * SET CONTENT OF ROBOTS.TXT
+   *
+   * @return  (string) robots.txt
+   */
+  public function setContent($content)
+  {
+    $this->robots_txt = $content;
+  }
+
+
+  /**
+   * INSERT SITEMAP LINK INTO ROBOTS.TXT
+   *
+   * @return  (string) robots.txt
+   */
+  public function addSitemapLink()
+  {
+    $this->robots_txt .= PHP_EOL.'Sitemap: '.$this->host.'sitemap.xml';
   }
 
 
@@ -59,6 +69,20 @@ class rexseo_robots
   public function get()
   {
     return $this->robots_txt;
+  }
+
+
+  /**
+   * SEND ROBOTS.TXT
+   */
+  public function send()
+  {
+    $robots = self::get();
+
+    header('Content-Type: text/plain; charset=UTF-8');
+    header('Content-Length: '.strlen($robots));
+    echo $robots;
+    die();
   }
 
 }
