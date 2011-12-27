@@ -438,12 +438,6 @@ function rexseo_generate_pathlist($params)
   if($where != '')
   {
     $db = new rex_sql();
-    //$db->debugsql=true;
-
-    // revision fix
-    $db->setQuery('UPDATE '. $REX['TABLE_PREFIX'] .'article SET revision = 0 WHERE revision IS NULL;');
-    $db->setQuery('UPDATE '. $REX['TABLE_PREFIX'] .'article_slice SET revision = 0 WHERE revision IS NULL;');
-
     $db->setQuery('SELECT `id`, `clang`, `path`, `startpage`,`art_rexseo_url` FROM '. $REX['TABLE_PREFIX'] .'article WHERE '. $where.' AND revision=0 OR revision=NULL');
 
     while($db->hasNext())
@@ -534,6 +528,10 @@ function rexseo_generate_pathlist($params)
 
       // SANITIZE MULTIPLE "-" IN PATHNAME
       $pathname = preg_replace('/[-]{1,}/', '-', $pathname);
+
+      // UNSET OLD URL FROM $REXSEO_URLS
+      if(isset($REXSEO_IDS[$id][$clang]['url']) && isset($REXSEO_URLS[$REXSEO_IDS[$id][$clang]['url']]))
+        unset($REXSEO_URLS[$REXSEO_IDS[$id][$clang]['url']]);
 
       $REXSEO_IDS[$id][$clang] = array('url' => $pathname);
       $REXSEO_URLS[$pathname]  = array('id'  => (int) $id, 'clang' => (int) $clang);
