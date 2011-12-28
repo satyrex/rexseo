@@ -147,20 +147,20 @@ if (!function_exists('rexseo_incparse'))
     {
       case 'textile':
       $source = $root.$source;
-      $content = file_get_contents($source);
-      $html = rexseo_textileparser($content,true);
+      $new_redirects = file_get_contents($source);
+      $html = rexseo_textileparser($new_redirects,true);
       break;
 
       case 'txt':
       $source = $root.$source;
-      $content = file_get_contents($source);
-      $html =  '<pre class="plain">'.$content.'</pre>';
+      $new_redirects = file_get_contents($source);
+      $html =  '<pre class="plain">'.$new_redirects.'</pre>';
       break;
 
       case 'raw':
       $source = $root.$source;
-      $content = file_get_contents($source);
-      $html = $content;
+      $new_redirects = file_get_contents($source);
+      $html = $new_redirects;
       break;
 
       case 'php':
@@ -285,9 +285,9 @@ if (!function_exists('get_include_contents'))
     if (is_file($filename)) {
       ob_start();
       include $filename;
-      $contents = ob_get_contents();
+      $new_redirectss = ob_get_contents();
       ob_end_clean();
-      return $contents;
+      return $new_redirectss;
     }
     return false;
   }
@@ -424,4 +424,85 @@ function rexseo_inject_301($params)
   }
 
   return $params['subject'];
+}
+
+
+// HTACCESS REDIRECTS UPDATE FUNCTION
+////////////////////////////////////////////////////////////////////////////////
+function rexseo_htaccess_update_redirects()
+{
+  global $REX;                                                                  #FB::group('rexseo_htaccess_update_redirects()');
+
+  $db = new rex_sql;
+  $redirects = array();
+  $qry = 'SELECT * FROM rex_rexseo_redirects WHERE `status`=1 ORDER BY `createdate` DESC;';
+  $qry = 'SELECT * FROM rex_rexseo_redirects ORDER BY `createdate` DESC;';
+
+  foreach($db->getDBArray($qry) as $r)
+  {
+    $target_url = rex_getUrl($r['to_article_id'],$r['to_clang']);               #FB::log($target_url,'$target_url');
+    $from_url   = $r['from_url'];                                               #FB::log($from_url,'$from_url');
+
+    if($from_url==$target_url)
+    {
+      rexseo_conflicted_redirect($r['id'],2,'delete');                          #FB::log($r['id'],'$from_url==$target_url');
+      continue;
+    }
+    elseif(isset($redirects[$from_url]))
+    {
+      rexseo_conflicted_redirect($r['id'],3,'update');                          #FB::log($r['id'],'$redirects[$from_url]');
+      continue;
+    }
+    elseif(isset($redirects[$target_url]))
+    {
+      rexseo_conflicted_redirect($r['id'],4,'update');                          #FB::log($r['id'],'redirects[$target_url]');
+      continue;
+    }
+    elseif($r['status']==1)
+    {
+      $redirects[$from_url]=array('http_status'=>$r['http_status'],'target_url'=>$target_url);
+    }
+  }                                                                             #FB::log($redirects,'$redirects');
+
+  $ht_path = $_SERVER['DOCUMENT_ROOT'].'/.htaccess';
+  if(count($redirects)>0)
+  {
+    $new_redirects = '### REXSEO REDIRECTS BLOCK'.PHP_EOL;
+    foreach($redirects as $k=>$v)
+    {
+      $new_redirects .= 'Redirect '.$v['http_status'].' /'.$k.' '.$REX['SERVER'].$v['target_url'].PHP_EOL;
+    }
+    $new_redirects .= '### /REXSEO REDIRECTS BLOCK';
+  }
+  else
+  {
+    $new_redirects = '### REXSEO REDIRECTS BLOCK'.PHP_EOL.'### /REXSEO REDIRECTS BLOCK';
+  }
+
+  if($ht_content = rex_get_file_contents($ht_path))
+  {
+    if(preg_match("@(### REXSEO REDIRECTS BLOCK.*### /REXSEO REDIRECTS BLOCK)@s",$ht_content)!=1)
+      echo rex_warning('ACHTUNG: redirects konnten nicht geschrieben werden!<br />
+Bitte die .htaccess auf <a>korrektes redirects delimiter Paar</a> überprüfen.');
+
+    $new_ht = preg_replace("@(### REXSEO REDIRECTS BLOCK.*### /REXSEO REDIRECTS BLOCK)@s", $new_redirects, $ht_content);
+    return rex_put_file_contents($ht_path, $new_ht);
+  }                                                                             #FB::groupEnd();
+  return false;
+}
+
+// MARK REDIRECT AS CONFLICTED
+////////////////////////////////////////////////////////////////////////////////
+function rexseo_conflicted_redirect($id,$status=2,$func='update')
+{
+  $db = new rex_sql;
+  switch($func)
+  {
+  case 'delete':
+    return $db->setQuery('DELETE FROM `rex_rexseo_redirects` WHERE `id`='.$id.' AND `creator`=\'rexseo\';');
+    break;
+
+  default:
+    return $db->setQuery('UPDATE `rex_rexseo_redirects` SET `status`='.$status.' WHERE `id`='.$id.';');
+  }
 }

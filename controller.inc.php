@@ -11,8 +11,10 @@
  * @version svn:$Id$
  */
 
+global $REX;
+
 if (rex_request('rexseo_func')!="") {
-  $path = $REX['INCLUDE_PATH'].'/addons/'.$myself;
+  $path = $REX['INCLUDE_PATH'].'/addons/rexseo';
 
   switch (rex_request('rexseo_func')) {
     case "googlesitemap":

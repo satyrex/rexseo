@@ -201,6 +201,49 @@ a.help-icon:hover {
 
 }
 
+ul#rexseo-redirect-list {
+  margin-left:155px;
+  list-style-type:none;
+}
+
+table#rexseo-redirect-list {
+ /* -moz-outline-radius: 4px 4px 4px 4px;
+  border: 0 none;
+  outline: 1px solid #CBCBCB;*/
+  border-top: 1px solid #CBCBCB;
+  margin:0;
+  padding:0;
+  width:100%;
+}
+
+table#rexseo-redirect-list td,
+table#rexseo-redirect-list th {
+  padding:4px;
+}
+
+table#rexseo-redirect-list th {
+  color:gray;
+}
+
+table#rexseo-redirect-list span.redirect-btn {
+  display:inline-block;
+  width:70px;
+  line-height:16px;
+  text-align:center;
+  background:#F0F0F0 url(../files/addons/be_style/plugins/agk_skin/button.gif) 0 -3px repeat-x;
+  -moz-outline-radius: 4px 4px 4px 4px;
+  border: 0 none;
+  outline: 1px solid #CBCBCB;
+}
+
+table#rexseo-redirect-list span.redirect-btn.active {
+  color:#107C2C;
+}
+
+table#rexseo-redirect-list span.redirect-btn.inactive {
+  color:#EA1144;
+}
+
 /*REDMINE RSS*/
 
 .rexseo ul.redmine-feed {
@@ -214,4 +257,15 @@ a.help-icon:hover {
 }
 .rexseo ul.redmine-feed .redmine-date {
 	margin-right:15px;
+}
+
+/*MULTI-CLANG LINKMAP HACK*/
+div.rex-widget p.rex-widget-icons a.open-clang-linkmap {
+  background-image: url("../files/addons/be_style/plugins/agk_skin/generic.gif") !important;
+  padding: 3px 0 0 !important;
+  text-align: center !important;
+  font-weight:bold;
+}
+div.rex-widget p.rex-widget-icons a.open-clang-linkmap.current {
+  color:#14568A !important;
 }

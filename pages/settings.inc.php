@@ -32,7 +32,6 @@ $CAST = array (
       'homelang'                   => 'int',
       'allow_articleid'            => 'int',
       'levenshtein'                => 'int',
-      '301s'                       => '301_2_array',
       'expert_settings'            => 'int',
       'alert_setup'                => 'int',
       'first_run'                  => 'int',
@@ -91,6 +90,25 @@ if($REX['ADDON'][$myself]['settings']['first_run'] == 1 && file_exists($backup))
   echo rex_info('Daten wurde aus Backup ins Formular &uuml;bernommen - bitte Einstellungen speichern!');
 }
 
+
+// TOGGLE REDIRECT
+////////////////////////////////////////////////////////////////////////////////
+if(rex_request('func','string')=='toggle_redirect' && intval(rex_request('id','int'))>0)
+{
+  $db = new rex_sql;
+  $db->setQuery('UPDATE `rex_rexseo_redirects` SET `status` = IF(status=1, 0, 1) WHERE `id`='.rex_request('id','int').';');
+  rexseo_htaccess_update_redirects();
+}
+
+
+// DELETE REDIRECT
+////////////////////////////////////////////////////////////////////////////////
+if(rex_request('func','string')=='delete_redirect' && intval(rex_request('id','int'))>0)
+{
+  $db = new rex_sql;
+  $db->setQuery('DELETE FROM `rex_rexseo_redirects` WHERE `id`='.rex_request('id','int').';');
+  rexseo_htaccess_update_redirects();
+}
 
 
 // URL_SCHEMA SELECT BOX
@@ -380,13 +398,60 @@ echo '
       <fieldset class="rex-form-col-1">
         <legend>Weiterleitungen</legend>
         <div class="rex-form-wrapper">
+              <table id="rexseo-redirect-list" class="rex-table">
+              <tr>
+                <th>alte URL</th>
+                <th>Status</th>
+                <th>Umleitung auf</th>
+                <th></th>
+              </tr>
+';
 
-          <div class="rex-form-row">
-            <p class="rex-form-col-a rex-form-select">
-              <label for="robots" class="helptopic">301 Weiterleitungen:<br /> <br /><em style="color:gray;font-size:10px;">url article_id clang<br /><br />z.B. foo/bar.html 4 0</em></label>
-              <textarea id="rexseo_redirects" name="301s">'.rexseo_301_2_string($REX['ADDON'][$myself]['settings']['301s']).'</textarea>
-            </p>
-          </div><!-- /rex-form-row -->
+$db = new rex_sql;
+$qry = 'SELECT * FROM `rex_rexseo_redirects` ORDER BY `createdate` DESC';
+foreach($db->getDBArray($qry) as $r)
+{
+  switch($r['status'])
+  {
+    case 1:
+      $status = '<a href="index.php?page=rexseo&func=toggle_redirect&id='.$r['id'].'"><span class="redirect-btn active">aktiv ('.$r['http_status'].')</span></a>';
+      break;
+    case 2:
+      $status = '<span class="redirect-btn inactive">conflict</span>';
+      break;
+    case 3:
+      $status = '<span class="redirect-btn inactive">duplicate</span>';
+      break;
+    default:
+      $status = '<a href="index.php?page=rexseo&func=toggle_redirect&id='.$r['id'].'"><span class="redirect-btn">inaktiv</span></a>';
+  }
+
+  echo '
+              <tr>
+                <td>
+                  <a class="new" href="index.php?list=data&page=rexseo&subpage=redirects&func=edit&id='.$r['id'].'">
+                    '.urldecode($r['from_url']).'
+                  </a>
+                </td>
+                <td>
+                    '.$status.'
+                </td>
+                <td>
+                  <a class="new" href="index.php?list=data&page=rexseo&subpage=redirects&func=edit&id='.$r['id'].'">
+                  '.urldecode(rex_getUrl($r['to_article_id'],$r['to_clang'])).' ['.$r['to_article_id'].'] ['.$r['to_clang'].']
+                  </a>
+                </td>
+                <td>
+                  <a href="index.php?page=rexseo&func=delete_redirect&id='.$r['id'].'">
+                    <img style="border:0;margin:-3px 0 0 0;" src="../files/addons/rex_phpids/rex_agk_delete_on.gif">
+                  </a>
+                </td>
+              </tr>';
+}
+
+echo '
+              </table>
+
 
         </div><!-- /rex-form-wrapper -->
       </fieldset>
@@ -440,7 +505,7 @@ jQuery(function($) {
       $("#params_starter").hide();
     }
 
-    // ATUOMATIC HELP TOPIC LINK
+    // AUTOMATIC HELP TOPIC LINK
     $(".helptopic").each(function() {
     var p = $(this).html().split(":");
     p[1] = \' <a class="help-icon" title="Hilfe zum Thema anzeigen" href="index.php?page=rexseo&subpage=help&chapter=settings&highlight=\'+escape(p[0]+\':\')+\'">?</a>\'+p[1];
@@ -484,6 +549,9 @@ echo '
       $("#rexseo_robots").autogrow();
   });
 
+  $(document).ready(function(){
+    $("a.new").attr("target","_redirects");
+    });
 
 });
 //-->

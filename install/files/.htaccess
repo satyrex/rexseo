@@ -1,6 +1,10 @@
+### DO NOT DELETE THE FOLLOWING BLOCK DELIMITERS!
+### REXSEO REDIRECTS BLOCK
+### /REXSEO REDIRECTS BLOCK
+
 <IfModule mod_rewrite.c>
 
-# ENABLE REWRITING
+### ENABLE REWRITING
 RewriteEngine On
 RewriteBase /
 
@@ -17,9 +21,9 @@ RewriteBase /
 # RewriteCond %{HTTP_HOST} ^DOMAIN\.TLD$
 # RewriteRule ^(.*)$ http://www.DOMAIN.TLD/$1 [L,R=301]
 
-### REDIRECT SITEMAP.XML -> REXSEO SITEMAP FUNCTION
+### REDIRECT SITEMAP.XML -> REXSEO SITEMAP FUNCTION (XML)
 RewriteRule ^sitemap\.xml$ index.php?rexseo_func=googlesitemap [NC,L]
-### SAME AS ABOVE, BUT OUTPUT AS JSON
+### REDIRECT SITEMAP.JSON -> REXSEO SITEMAP FUNCTION (JSON FORMAT)
 # RewriteRule ^sitemap\.json$ index.php?rexseo_func=googlesitemap?mode=json [NC,L]
 
 ### REDIRECT ROBOTS.TXT -> REXSEO ROBOTS FUNCTION

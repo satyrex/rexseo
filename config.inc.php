@@ -31,11 +31,13 @@ $REX['ADDON']['supportpage'][$myself] = 'forum.redaxo.de';
 $REX['ADDON']['perm'][$myself]        = $myself.'[]';
 $REX['PERM'][]                        = $myself.'[]';
 $REX['ADDON'][$myself]['SUBPAGES']    = array (
-  array ('',    'Einstellungen'),
-  array ('help','Hilfe')
+  array ('',          'Einstellungen'),
+  array ('redirects', 'Redirects'),
+  array ('help',      'Hilfe')
   );
 $REX['ADDON'][$myself]['redmine_url'] = 'http://www.gn2-code.de/projects/rexseo';
 $REX['ADDON'][$myself]['redmine_key'] = '2437c4f8172c5c6e0020a236b576d5128029451b';
+$REX['ADDON'][$myself]['auto_301_expire_days'] = 60;
 $REX['PROTOCOL'] = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https://' : 'http://';
 
 
@@ -118,9 +120,70 @@ if ($REX['MOD_REWRITE'] !== false)
   }
 
   // INJECT 301 URLS INTO REXSEO PATHLIST
-  rex_register_extension('REXSEO_PATHLIST_CREATED','rexseo_inject_301');
+  //rex_register_extension('REXSEO_PATHLIST_CREATED','rexseo_inject_301');
 }
 
-include $REX['INCLUDE_PATH'].'/addons/'.$myself.'/controller.inc.php';
+//include $REX['INCLUDE_PATH'].'/addons/'.$myself.'/controller.inc.php';
+
+
+// RUN CACHER ON DB CHANGES
+////////////////////////////////////////////////////////////////////////////////
+if ($REX['REDAXO'])
+{
+  rex_register_extension('REX_FORM_SAVED','rexseo_ht_update_callback');
+  function rexseo_ht_update_callback($params)
+  {
+    //FB::log($params,'REX_FORM_SAVED:');
+    rexseo_htaccess_update_redirects();
+  }
+}
+
+
+// AUTO CREATE REDIRECTS FROM CHANGED URLS
+////////////////////////////////////////////////////////////////////////////////
+if ($REX['REDAXO'] && $REX['MOD_REWRITE'] !== false)
+{
+  rex_register_extension('REXSEO_PATHLIST_BEFORE_REBUILD','rexseo_remember_prior_pathlist');
+  function rexseo_remember_prior_pathlist($params)
+  {
+    global $REX;
+    $REX['REXSEO_PRIOR_URLS'] = $params['subject']['REXSEO_URLS'];
+  }
+
+  rex_register_extension('REXSEO_PATHLIST_CREATED','rexseo_auto_301');
+  function rexseo_auto_301($params)
+  {
+    global $REX;                                                                #FB::group('rexseo_auto_301');
+
+    $diff = array();
+    $diff = array_diff(array_keys($REX['REXSEO_PRIOR_URLS']),array_keys($params['subject']['REXSEO_URLS'])); #FB::log($diff,'$diff');
+
+    if(is_array($diff) && count($diff)>0)
+    {
+      $db = new rex_sql;
+      $qry = 'INSERT INTO `rex_rexseo_redirects` (`id`, `createdate`, `updatedate`, `expiredate`, `creator`, `status`, `from_url`, `to_article_id`, `to_clang`, `http_status`) VALUES';
+      $date = time();
+      $expire = $date + ($REX['ADDON']['rexseo']['auto_301_expire_days']*24*60*60);
+      foreach($diff as $k=>$url)
+      {
+        $qry .= PHP_EOL.'(\'\', \''.$date.'\', \''.$date.'\', \''.$expire.'\', \'rexseo\', 1, \''.$url.'\', '.$REX['REXSEO_PRIOR_URLS'][$url]['id'].', '.$REX['REXSEO_PRIOR_URLS'][$url]['clang'].', 301),';
+      }
+      $qry = rtrim($qry,',').';';                                               #FB::log($qry,'$qry');
+      $db->setQuery($qry);
+      rexseo_htaccess_update_redirects();
+    }                                                                           #FB::groupEnd();
+  }
+}
+
+
+// INCLUDE CONTROLLER AFTER ADDONS INLCUDED
+////////////////////////////////////////////////////////////////////////////////
+rex_register_extension('ADDONS_INCLUDED','rexseo_controller_include');
+function rexseo_controller_include($params)
+{
+  global $REX;
+  include $REX['INCLUDE_PATH'].'/addons/rexseo/controller.inc.php';
+}
+
 
 ?>
