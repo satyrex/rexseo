@@ -95,11 +95,13 @@ if($REX['ADDON'][$myself]['settings']['first_run'] == 1 && file_exists($backup))
   echo rex_info('Daten wurde aus Backup ins Formular &uuml;bernommen - bitte Einstellungen speichern!');
 
   // IMPORT REDIRECTS FROM BACKUP CONFIG TO DB
-  if(!isset($REX['ADDON']['rexseo']['settings']['redirects_imported']) &&
-     isset($REX['ADDON']['rexseo']['settings']['301s']) && 
-     count($REX['ADDON']['rexseo']['settings']['301s'])>0)
+  $db = new rex_sql;
+  $db->setQuery('SELECT * FROM `rex_rexseo_redirects`;');
+
+  if(isset($REX['ADDON']['rexseo']['settings']['301s']) && 
+     count($REX['ADDON']['rexseo']['settings']['301s'])>0 &&
+     $db->getRows()==0)
   {
-    $db = new rex_sql;
     $qry = 'INSERT INTO `rex_rexseo_redirects` (`id`, `createdate`, `updatedate`, `expiredate`, `creator`, `status`, `from_url`, `to_article_id`, `to_clang`, `http_status`) VALUES';
     $date = time();
     if(!isset($REX['ADDON'][$myself]['settings']['default_redirect_expire']))
@@ -115,7 +117,6 @@ if($REX['ADDON'][$myself]['settings']['first_run'] == 1 && file_exists($backup))
       echo rex_info('Weiterleitungen wurden aus Backup in die DB importiert.');
     }
   }
-  $REX['ADDON'][$myself]['settings']['redirects_imported'] = 1;
 }
 
 
@@ -197,7 +198,6 @@ if(count($REX['CLANG']) > 1)
     $hide_langslug_select->addOption('Kein lang slug für Sprache: '.$str,$id);
   }
   $hide_langslug_select->setSelected($REX['ADDON'][$myself]['settings']['hide_langslug']);
-  //$hide_langslug_select->setAttribute('style','width:70px;margin-left:20px;');
   $hide_langslug_select = '
           <div class="rex-form-row">
             <p class="rex-form-col-a rex-form-select">
@@ -313,7 +313,7 @@ echo '
     <input type="hidden" name="install_subdir"         value="'.rexseo_subdir().'" />
     <input type="hidden" name="url_whitespace_replace" value="-" />
     <input type="hidden" name="compress_pathlist"      value="1" />
-    <input type="hidden" name="redirects_imported"     value="'.$REX['ADDON'][$myself]['settings']['redirects_imported'].'" />';
+';
 
 foreach ($REX['CLANG'] as $id => $str)
 {
@@ -487,7 +487,7 @@ if(count($db->getDBArray($qry))>0)
 }
 echo '
 
-          <div class="rex-form-row">
+          <div class="rex-form-row" style="border-top: 1px solid #CBCBCB;">
             <p class="rex-form-col-a rex-form-text">
               <label for="default_redirect_expire" class="helptopic">Default Expire:</label>
               <input id="default_redirect_expire" class="rex-form-text" style="width:50px;" type="text" name="default_redirect_expire" value="'.stripslashes($REX['ADDON'][$myself]['settings']['default_redirect_expire']).'" /> Tage
