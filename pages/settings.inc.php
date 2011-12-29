@@ -113,9 +113,9 @@ if($REX['ADDON'][$myself]['settings']['first_run'] == 1 && file_exists($backup))
     if($db->setQuery($qry))
     {
       echo rex_info('Weiterleitungen wurden aus Backup in die DB importiert.');
-      $REX['ADDON'][$myself]['settings']['redirects_imported'] = 1;
     }
   }
+  $REX['ADDON'][$myself]['settings']['redirects_imported'] = 1;
 }
 
 
@@ -427,6 +427,13 @@ echo '
       <fieldset class="rex-form-col-1">
         <legend>Weiterleitungen</legend>
         <div class="rex-form-wrapper">
+';
+
+$db = new rex_sql;
+$qry = 'SELECT * FROM `rex_rexseo_redirects` ORDER BY `createdate` DESC';
+if(count($db->getDBArray($qry))>0)
+{
+  echo '
               <table id="rexseo-redirect-list" class="rex-table">
               <tr>
                 <th>alte URL</th>
@@ -435,56 +442,55 @@ echo '
                 <th></th>
               </tr>
 ';
-
-$db = new rex_sql;
-$qry = 'SELECT * FROM `rex_rexseo_redirects` ORDER BY `createdate` DESC';
-foreach($db->getDBArray($qry) as $r)
-{
-  switch($r['status'])
+  foreach($db->getDBArray($qry) as $r)
   {
-    case 1:
-      $status = '<a href="index.php?page=rexseo&func=toggle_redirect&id='.$r['id'].'"><span class="redirect-btn active">aktiv ('.$r['http_status'].')</span></a>';
-      break;
-    case 2:
-      $status = '<span class="redirect-btn inactive">conflict</span>';
-      break;
-    case 3:
-      $status = '<span class="redirect-btn inactive">duplicate</span>';
-      break;
-    default:
-      $status = '<a href="index.php?page=rexseo&func=toggle_redirect&id='.$r['id'].'"><span class="redirect-btn">inaktiv</span></a>';
+    switch($r['status'])
+    {
+      case 1:
+        $status = '<a href="index.php?page=rexseo&func=toggle_redirect&id='.$r['id'].'"><span class="redirect-btn active">aktiv ('.$r['http_status'].')</span></a>';
+        break;
+      case 2:
+        $status = '<span class="redirect-btn inactive">conflict</span>';
+        break;
+      case 3:
+        $status = '<span class="redirect-btn inactive">duplicate</span>';
+        break;
+      default:
+        $status = '<a href="index.php?page=rexseo&func=toggle_redirect&id='.$r['id'].'"><span class="redirect-btn">inaktiv</span></a>';
+    }
+  
+    echo '
+                <tr>
+                  <td>
+                    <a class="new" href="index.php?list=data&page=rexseo&subpage=redirects&func=edit&id='.$r['id'].'">
+                      '.urldecode($r['from_url']).'
+                    </a>
+                  </td>
+                  <td>
+                      '.$status.'
+                  </td>
+                  <td>
+                    <a class="new" href="index.php?list=data&page=rexseo&subpage=redirects&func=edit&id='.$r['id'].'">
+                    '.urldecode(rex_getUrl($r['to_article_id'],$r['to_clang'])).' ['.$r['to_article_id'].'] ['.$r['to_clang'].']
+                    </a>
+                  </td>
+                  <td>
+                    <a href="index.php?page=rexseo&func=delete_redirect&id='.$r['id'].'">
+                      <img style="border:0;margin:-3px 0 0 0;" src="../files/addons/rex_phpids/rex_agk_delete_on.gif">
+                    </a>
+                  </td>
+                </tr>';
   }
-
   echo '
-              <tr>
-                <td>
-                  <a class="new" href="index.php?list=data&page=rexseo&subpage=redirects&func=edit&id='.$r['id'].'">
-                    '.urldecode($r['from_url']).'
-                  </a>
-                </td>
-                <td>
-                    '.$status.'
-                </td>
-                <td>
-                  <a class="new" href="index.php?list=data&page=rexseo&subpage=redirects&func=edit&id='.$r['id'].'">
-                  '.urldecode(rex_getUrl($r['to_article_id'],$r['to_clang'])).' ['.$r['to_article_id'].'] ['.$r['to_clang'].']
-                  </a>
-                </td>
-                <td>
-                  <a href="index.php?page=rexseo&func=delete_redirect&id='.$r['id'].'">
-                    <img style="border:0;margin:-3px 0 0 0;" src="../files/addons/rex_phpids/rex_agk_delete_on.gif">
-                  </a>
-                </td>
-              </tr>';
-}
-
-echo '
               </table>
+';
+}
+echo '
 
           <div class="rex-form-row">
             <p class="rex-form-col-a rex-form-text">
               <label for="default_redirect_expire" class="helptopic">Default Expire:</label>
-              <input id="default_redirect_expire" class="rex-form-text" type="text" name="default_redirect_expire" value="'.stripslashes($REX['ADDON'][$myself]['settings']['default_redirect_expire']).'" />
+              <input id="default_redirect_expire" class="rex-form-text" style="width:50px;" type="text" name="default_redirect_expire" value="'.stripslashes($REX['ADDON'][$myself]['settings']['default_redirect_expire']).'" /> Tage
             </p>
           </div><!-- /rex-form-row -->
 
