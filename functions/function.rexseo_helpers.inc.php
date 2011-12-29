@@ -440,6 +440,7 @@ function rexseo_htaccess_update_redirects()
 
   $db = new rex_sql;
   $redirects = array();
+  $now = time();
   $qry = 'SELECT * FROM rex_rexseo_redirects WHERE `status`=1 ORDER BY `createdate` DESC;';
   $qry = 'SELECT * FROM rex_rexseo_redirects ORDER BY `createdate` DESC;';
 
@@ -450,17 +451,22 @@ function rexseo_htaccess_update_redirects()
 
     if($from_url==$target_url)
     {
-      rexseo_conflicted_redirect($r['id'],2,'delete');                          #FB::log($r['id'],'$from_url==$target_url');
+      rexseo_update_redirect($r['id'],2,'delete');                          #FB::log($r['id'],'$from_url==$target_url');
       continue;
     }
     elseif(isset($redirects[$from_url]))
     {
-      rexseo_conflicted_redirect($r['id'],3,'update');                          #FB::log($r['id'],'$redirects[$from_url]');
+      rexseo_update_redirect($r['id'],3,'update');                          #FB::log($r['id'],'$redirects[$from_url]');
       continue;
     }
     elseif(isset($redirects[$target_url]))
     {
-      rexseo_conflicted_redirect($r['id'],4,'update');                          #FB::log($r['id'],'redirects[$target_url]');
+      rexseo_update_redirect($r['id'],4,'update');                          #FB::log($r['id'],'redirects[$target_url]');
+      continue;
+    }
+    elseif($r['expiredate']<$now)
+    {
+      rexseo_update_redirect($r['id'],5,'update');                          #FB::log($r['id'],'redirects[$target_url]');
       continue;
     }
     elseif($r['status']==1)
@@ -496,9 +502,9 @@ Bitte die .htaccess auf <a>korrektes redirects delimiter Paar</a> überprüfen.'
   return false;
 }
 
-// MARK REDIRECT AS CONFLICTED
+// UPDATE REDIRECT STATUS OR DELETE
 ////////////////////////////////////////////////////////////////////////////////
-function rexseo_conflicted_redirect($id,$status=2,$func='update')
+function rexseo_update_redirect($id,$status=2,$func='update')
 {
   $db = new rex_sql;
   switch($func)

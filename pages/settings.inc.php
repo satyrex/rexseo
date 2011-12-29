@@ -43,7 +43,8 @@ $CAST = array (
       'rewrite_params'             => 'int',
       'hide_langslug'              => 'int',
       'compress_pathlist'          => 'int',
-      'urlencode'                  => 'int'
+      'urlencode'                  => 'int',
+      'default_redirect_expire'    => 'int'
       );
 
 // UPDATE/SAVE SETTINGS
@@ -454,6 +455,9 @@ if(count($db->getDBArray($qry))>0)
         break;
       case 3:
         $status = '<span class="redirect-btn inactive">duplicate</span>';
+        break;
+      case 5:
+        $status = '<span class="redirect-btn inactive">expired</span>';
         break;
       default:
         $status = '<a href="index.php?page=rexseo&func=toggle_redirect&id='.$r['id'].'"><span class="redirect-btn">inaktiv</span></a>';

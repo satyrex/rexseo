@@ -97,7 +97,7 @@ $REX["ADDON"]["rexseo"]["settings"] = array (
   'urlencode' => 0,
   'allow_articleid' => 0,
   'levenshtein' => 0,
-  '301s' => array (),
+  'default_redirect_expire' => 60,
   'robots' => 'User-agent: *
 Disallow:',
   'expert_settings' => 0,
@@ -163,7 +163,7 @@ if ($REX['REDAXO'] && $REX['MOD_REWRITE'] !== false)
       $db = new rex_sql;
       $qry = 'INSERT INTO `rex_rexseo_redirects` (`id`, `createdate`, `updatedate`, `expiredate`, `creator`, `status`, `from_url`, `to_article_id`, `to_clang`, `http_status`) VALUES';
       $date = time();
-      $expire = $date + ($REX['ADDON']['rexseo']['default_redirect_expire']*24*60*60);
+      $expire = $date + ($REX['ADDON']['rexseo']['settings']['default_redirect_expire']*24*60*60);
       foreach($diff as $k=>$url)
       {
         $qry .= PHP_EOL.'(\'\', \''.$date.'\', \''.$date.'\', \''.$expire.'\', \'rexseo\', 1, \''.$url.'\', '.$REX['REXSEO_PRIOR_URLS'][$url]['id'].', '.$REX['REXSEO_PRIOR_URLS'][$url]['clang'].', 301),';
