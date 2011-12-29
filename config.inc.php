@@ -19,7 +19,7 @@ $Revision = '';
 $REX['ADDON'][$myself]['VERSION'] = array
 (
 'VERSION'      => 1,
-'MINORVERSION' => 3,
+'MINORVERSION' => 4,
 'SUBVERSION'   => preg_replace('/[^0-9]/','',"$Revision$")
 );
 
@@ -50,51 +50,38 @@ require_once $myroot.'/functions/function.rexseo_helpers.inc.php';
 ////////////////////////////////////////////////////////////////////////////////
 // --- DYN
 $REX["ADDON"]["rexseo"]["settings"] = array (
-  'rexseo_version' => $REX['ADDON']['version'][$myself],
-  'first_run' => 1,
-  'alert_setup' => 1,
-  'install_subdir' => rexseo_subdir(),
+  'rexseo_version' => '1.3.223',
+  'first_run' => 0,
+  'alert_setup' => 0,
+  'install_subdir' => '',
   'url_whitespace_replace' => '-',
   'compress_pathlist' => 1,
-  'def_desc' =>
+  'redirects_imported' => '1',
+  'def_desc' => 
   array (
-    0 => '',
+    0 => 'main desc @ backupfile',
     1 => '',
-    2 => '',
-    3 => '',
-    4 => '',
-    5 => '',
-    6 => '',
-    7 => '',
-    8 => '',
   ),
-  'def_keys' =>
+  'def_keys' => 
   array (
-    0 => '',
+    0 => 'main keys @ backupfile',
     1 => '',
-    2 => '',
-    3 => '',
-    4 => '',
-    5 => '',
-    6 => '',
-    7 => '',
-    8 => '',
   ),
   'title_schema' => '%B - %S',
   'url_schema' => 'rexseo',
   'url_ending' => '.html',
   'hide_langslug' => -1,
-  'rewrite_params' => 0,
+  'rewrite_params' => 1,
   'params_starter' => '++',
   'homeurl' => 1,
   'homelang' => 0,
-  'urlencode' => 0,
+  'urlencode' => 1,
   'allow_articleid' => 0,
   'levenshtein' => 0,
-  '301s' => array (),
+  'default_redirect_expire' => '60',
   'robots' => 'User-agent: *
-Disallow:',
-  'expert_settings' => 0,
+Disallow:  @ backupfile',
+  'expert_settings' => 1,
 );
 // --- /DYN
 

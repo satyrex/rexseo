@@ -1,13 +1,18 @@
 <?php
-
 /**
- * REXseo
- * Based on the URL-Rewrite Addon
+ * RexSEO Addon
+ *
+ * @link http://gn2-code.de/projects/rexseo/
+ * @link https://github.com/gn2netwerk/rexseo
+ *
  * @author dh[at]gn2-netwerk[dot]de Dave Holloway
- * @author markus.staab[at]redaxo[dot]de Markus Staab
  * @author code[at]rexdev[dot]de jeandeluxe
- * @package redaxo4.2
- * @version 1.3
+ *
+ * Based on url_rewrite Addon by
+ * @author markus.staab[at]redaxo[dot]de Markus Staab
+ *
+ * @package redaxo4.2.x/4.3.x
+ * @version 1.4
  * @version svn:$Id$
  */
 
