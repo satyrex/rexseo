@@ -88,6 +88,29 @@ if($REX['ADDON'][$myself]['settings']['first_run'] == 1 && file_exists($backup))
 {
   require_once $backup;
   echo rex_info('Daten wurde aus Backup ins Formular &uuml;bernommen - bitte Einstellungen speichern!');
+
+  // IMPORT REDIRECTS FROM BACKUP CONFIG TO DB
+  if(!isset($REX['ADDON']['rexseo']['settings']['redirects_imported']) &&
+     isset($REX['ADDON']['rexseo']['settings']['301s']) && 
+     count($REX['ADDON']['rexseo']['settings']['301s'])>0)
+  {
+    $db = new rex_sql;
+    $qry = 'INSERT INTO `rex_rexseo_redirects` (`id`, `createdate`, `updatedate`, `expiredate`, `creator`, `status`, `from_url`, `to_article_id`, `to_clang`, `http_status`) VALUES';
+    $date = time();
+    if(!isset($REX['ADDON'][$myself]['settings']['default_redirect_expire']))
+      $REX['ADDON'][$myself]['settings']['default_redirect_expire'] = 60;
+    $expire = $date + ($REX['ADDON']['rexseo']['settings']['default_redirect_expire']*24*60*60);
+    foreach($REX['ADDON']['rexseo']['settings']['301s'] as $k=>$v)
+    {
+      $qry .= PHP_EOL.'(\'\', \''.$date.'\', \''.$date.'\', \''.$expire.'\', \''.$REX['USER']->getValue('login').'\', 1, \''.$k.'\', '.$v['article_id'].', '.$v['clang'].', 301),';
+    }
+    $qry = rtrim($qry,',').';';
+    if($db->setQuery($qry))
+    {
+      echo rex_info('Weiterleitungen wurden aus Backup in die DB importiert.');
+      $REX['ADDON'][$myself]['settings']['redirects_imported'] = 1;
+    }
+  }
 }
 
 
@@ -284,7 +307,8 @@ echo '
     <input type="hidden" name="alert_setup"            value="'.$REX['ADDON'][$myself]['settings']['alert_setup'].'" />
     <input type="hidden" name="install_subdir"         value="'.rexseo_subdir().'" />
     <input type="hidden" name="url_whitespace_replace" value="-" />
-    <input type="hidden" name="compress_pathlist"      value="1" />';
+    <input type="hidden" name="compress_pathlist"      value="1" />
+    <input type="hidden" name="redirects_imported"     value="'.$REX['ADDON'][$myself]['settings']['redirects_imported'].'" />';
 
 foreach ($REX['CLANG'] as $id => $str)
 {
@@ -451,6 +475,13 @@ foreach($db->getDBArray($qry) as $r)
 
 echo '
               </table>
+
+          <div class="rex-form-row">
+            <p class="rex-form-col-a rex-form-text">
+              <label for="default_redirect_expire" class="helptopic">Default Expire:</label>
+              <input id="default_redirect_expire" class="rex-form-text" type="text" name="default_redirect_expire" value="'.stripslashes($REX['ADDON'][$myself]['settings']['default_redirect_expire']).'" />
+            </p>
+          </div><!-- /rex-form-row -->
 
 
         </div><!-- /rex-form-wrapper -->
