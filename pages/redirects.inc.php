@@ -28,7 +28,7 @@ $id        = rex_request('id', 'int');
 // SETTINGS
 /////////////////////////////////////////////////////////////////////////////////
 $table      = $REX['TABLE_PREFIX'].'rexseo_redirects';
-$pagination = 30;
+$pagination = 15;
 
 
 // BATCH SUBMIT
@@ -62,7 +62,7 @@ if($func == '' || $func=='batch-submit')
    echo '<div class="rex-addon-output">
    <h2 class="rex-hl2">Redirects <span style="color:silver;font-size:12px;">(DB Tabelle: '.$table.')</span></h2>';
 
-  $query = 'SELECT `id`, `from_url`, `status`, `to_article_id`, `to_clang`, `http_status`, `createdate`, `updatedate`, `creator` FROM '.$table.' ORDER BY `createdate` DESC';
+  $query = 'SELECT `id`, `from_url`, `status`, `to_article_id`, `to_clang`, `http_status`, `expiredate`, `createdate`, `updatedate`, `creator` FROM '.$table.' ORDER BY `createdate` DESC';
   $list = new rex_list($query,$pagination,'data');
   $list->debug = false;
 
@@ -76,21 +76,21 @@ if($func == '' || $func=='batch-submit')
   $list->setColumnSortable('from_url'      );
   $list->setColumnSortable('status'        );
 
-  $list->addColumn        ('target','',4);
-  //$list->setColumnSortable('target'        );
+  $list->addColumn        ('target','',3);
 
   $list->setColumnSortable('to_article_id' );
   $list->setColumnSortable('to_clang'      );
   $list->setColumnSortable('http_status'   );
   $list->removeColumn     ('createdate'    );
   $list->removeColumn     ('updatedate'    );
-  $list->removeColumn     ('expiredate'    );
+  $list->setColumnSortable('expiredate'    );
   $list->removeColumn     ('creator'       );
 
 
   $list->setColumnLabel('id'            ,'ID');
   $list->setColumnLabel('from_url'      ,'alte URL');
   $list->setColumnLabel('status'        ,'Status');
+  $list->setColumnLabel('expiredate'    ,'Expire');
   $list->setColumnLabel('target'        ,'Ziel-Artikel');
   $list->setColumnLabel('to_article_id' ,'ID');
   $list->setColumnLabel('to_clang'      ,'CLANG');
@@ -100,7 +100,7 @@ if($func == '' || $func=='batch-submit')
   function list_status()
   {
     global $list;
-    $str = $list->getValue('status')==1 ? '<span style="color:#107C2C;">aktiv ('.$list->getValue('http_status').')</span>' : '<span style="color:#EA1144;">inaktiv</span>';
+    $str = $list->getValue('status')==1 ? '<span style="color:#107C2C;">aktiv</span>' : '<span style="color:#EA1144;">inaktiv</span>';
     return $str;
   }
   $list->setColumnFormat('status'  ,'custom', 'list_status');
@@ -112,10 +112,25 @@ if($func == '' || $func=='batch-submit')
   }
   $list->setColumnFormat('target'  ,'custom', 'list_target');
 
+  function list_from_url()
+  {
+    global $list;
+    return urldecode($list->getValue('from_url'));
+  }
+  $list->setColumnFormat('from_url'  ,'custom', 'list_from_url');
+
+  function list_expiredate()
+  {
+    global $list;
+    return date('d.m.y',$list->getValue('expiredate'));
+  }
+  $list->setColumnFormat('expiredate'  ,'custom', 'list_expiredate');
+
   $list->setColumnParams('id'            ,array('func' => 'edit', 'id' => '###id###'));
   $list->setColumnParams('from_url'      ,array('func' => 'edit', 'id' => '###id###'));
   $list->setColumnParams('status'        ,array('func' => 'edit', 'id' => '###id###'));
   $list->setColumnParams('target'        ,array('func' => 'edit', 'id' => '###id###'));
+  $list->setColumnParams('expiredate'    ,array('func' => 'edit', 'id' => '###id###'));
   $list->setColumnParams('to_article_id' ,array('func' => 'edit', 'id' => '###id###'));
   $list->setColumnParams('to_clang'      ,array('func' => 'edit', 'id' => '###id###'));
   $list->setColumnParams('http_status'   ,array('func' => 'edit', 'id' => '###id###'));
