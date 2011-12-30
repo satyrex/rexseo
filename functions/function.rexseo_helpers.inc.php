@@ -449,24 +449,24 @@ function rexseo_htaccess_update_redirects()
     $target_url = rex_getUrl($r['to_article_id'],$r['to_clang']);               #FB::log($target_url,'$target_url');
     $from_url   = $r['from_url'];                                               #FB::log($from_url,'$from_url');
 
-    if($from_url==$target_url)
+    if($from_url==$target_url) /*1:1 loop*/
     {
-      rexseo_update_redirect($r['id'],2,'delete');                          #FB::log($r['id'],'$from_url==$target_url');
+      rexseo_update_redirect($r['id'],2,'delete');                              #FB::log($r['id'],'$from_url==$target_url');
       continue;
     }
-    elseif(isset($redirects[$from_url]))
+    elseif(isset($redirects[$from_url])) /*duplicate*/
     {
-      rexseo_update_redirect($r['id'],3,'update');                          #FB::log($r['id'],'$redirects[$from_url]');
+      rexseo_update_redirect($r['id'],3,'update');                              #FB::log($r['id'],'$redirects[$from_url]');
       continue;
     }
-    elseif(isset($redirects[$target_url]))
+    elseif(isset($redirects[$target_url])) /*2nd level loop*/
     {
-      rexseo_update_redirect($r['id'],4,'update');                          #FB::log($r['id'],'redirects[$target_url]');
+      rexseo_update_redirect($r['id'],4,'update');                              #FB::log($r['id'],'redirects[$target_url]');
       continue;
     }
-    elseif($r['expiredate']<$now)
+    elseif($r['expiredate']<$now) /*expired*/
     {
-      rexseo_update_redirect($r['id'],5,'update');                          #FB::log($r['id'],'redirects[$target_url]');
+      rexseo_update_redirect($r['id'],5,'update');                              #FB::log($r['id'],'redirects[$target_url]');
       continue;
     }
     elseif($r['status']==1)
@@ -475,7 +475,15 @@ function rexseo_htaccess_update_redirects()
     }
   }                                                                             #FB::log($redirects,'$redirects');
 
-  $ht_path = $_SERVER['DOCUMENT_ROOT'].'/.htaccess';
+  $ht_path = $REX['HTDOCS_PATH'].'.htaccess';
+  
+  if(!file_exists($ht_path))
+    {
+      echo rex_warning('FEHLER: .htaccess wurde nicht unter folgendem Pfad gefunden:<br />
+Pfad: "'.$ht_path.'"');
+      return false;
+    }
+  
   if(count($redirects)>0)
   {
     $new_redirects = '### REXSEO REDIRECTS BLOCK'.PHP_EOL;
