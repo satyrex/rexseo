@@ -434,7 +434,7 @@ $db = new rex_sql;
 $qry = 'SELECT * FROM `rex_rexseo_redirects` ORDER BY `createdate` DESC';
 if(count($db->getDBArray($qry))>0)
 {
-  echo '
+  echo '<div style="max-height:300px;overflow:auto;">
               <table id="rexseo-redirect-list" class="rex-table">
               <tr>
                 <th>alte URL</th>
@@ -486,7 +486,7 @@ if(count($db->getDBArray($qry))>0)
                 </tr>';
   }
   echo '
-              </table>
+              </table></div>
 ';
 }
 echo '
