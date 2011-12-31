@@ -48,9 +48,11 @@ class rexseo_sitemap
     }
   
     // EXTENSIONPOINT REXSEO_SITEMAP_ARRAY_CREATED
-    #FB::log($db_articles,'$db_articles PRIOR');
-    $db_articles = rex_register_extension_point('REXSEO_SITEMAP_ARRAY_CREATED',$db_articles);#FB::log($db_articles,'$db_articles POST');
-  
+    $db_articles = rex_register_extension_point('REXSEO_SITEMAP_ARRAY_CREATED',$db_articles);
+
+    // EXTENSIONPOINT REXSEO_SITEMAP_ARRAY_FINAL (READ ONLY)
+    rex_register_extension_point('REXSEO_SITEMAP_ARRAY_FINAL',$db_articles);
+
     $this->db_articles = $db_articles;
   }
 
