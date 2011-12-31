@@ -302,7 +302,7 @@ jQuery(function($) {
     $("#rex_rexseo_redirects_Infos_expiredate").css("display","none");
     v = $("#rex_rexseo_redirects_Infos_expiredate").val();
     d = new Date(v * 1000);
-    $(".unix-date-picker").append(\'<input type="text" style="width:100px" id="formated-date" value="\'+d.getDate()+"."+d.getMonth()+"."+d.getFullYear()+\'" /> (DD.MM.YYYY)\');
+    $(".unix-date-picker").append(\'<input type="text" style="width:100px" id="formated-date" value="\'+d.getDate()+"."+d.getMonth()+"."+d.getFullYear()+\'" /> (D.M.YYYY)\');
 
   }); //jQuery(document).ready(function()
 
