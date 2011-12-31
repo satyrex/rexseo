@@ -548,6 +548,9 @@ function rexseo_generate_pathlist($params)
   // EXTENSION POINT "REXSEO_PATHLIST_CREATED"
   $subject = array('REXSEO_IDS'=>$REXSEO_IDS,'REXSEO_URLS'=>$REXSEO_URLS);
   $subject = rex_register_extension_point('REXSEO_PATHLIST_CREATED',$subject);
+  
+  // EXTENSION POINT "REXSEO_PATHLIST_FINAL" - READ ONLY
+  rex_register_extension_point('REXSEO_PATHLIST_FINAL',$subject);
 
   // ASSEMBLE, COMPRESS & WRITE PATHLIST TO FILE
   $pathlist_content = '$REXSEO_IDS = '.var_export($subject['REXSEO_IDS'],true).';'.PHP_EOL.'$REXSEO_URLS = '.var_export($subject['REXSEO_URLS'],true).';';

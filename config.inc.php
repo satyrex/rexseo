@@ -150,7 +150,7 @@ if ($REX['REDAXO'] && $REX['MOD_REWRITE'] !== false)
     $REX['REXSEO_PRIOR_URLS'] = $params['subject']['REXSEO_URLS'];
   }
 
-  rex_register_extension('REXSEO_PATHLIST_CREATED','rexseo_auto_301');
+  rex_register_extension('REXSEO_PATHLIST_FINAL','rexseo_auto_301');
   function rexseo_auto_301($params)
   {
     global $REX;
