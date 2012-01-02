@@ -1,0 +1,6 @@
+h1. RexSEO Resources
+
+* "Wiki":http://gn2-code.de/projects/rexseo/wiki
+* "Downloads":http://gn2-code.de/projects/rexseo/files
+* "SVN Repo":http://gn2-code.de/projects/rexseo/repository
+* "RexSEO threads @ forum.redaxo.org":www.redaxo.org/de/forum/search.php?keywords=rexseo
