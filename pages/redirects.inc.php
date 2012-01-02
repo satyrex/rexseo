@@ -315,7 +315,7 @@ jQuery(function($) {
   $(\'input#formated-date\').change(function(){
     u = $(this).val().split(".");
     if(u[0]<10) u[0]="0"+u[0];
-    if(u[1]<10) u[1]="0"+u[1];console.log(u);
+    if(u[1]<10) u[1]="0"+u[1];
     d = new Date(u[2],u[1],u[0]);
     $("#rex_rexseo_redirects_Infos_expiredate").val(d.getTime()/1000);
     });
