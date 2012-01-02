@@ -17,9 +17,16 @@
 
 
 /* ADDON HEADLINE */
+#rex-title .rex-title-row h1 {
+  background:url('index.php?rexseo_func=rexseo_logo.png') no-repeat 2px 2px;
+  text-indent:-9999px;
+  }
 span.addonversion {
+  display:block;
+  margin-left:260px;
   font-size:10px;
   color:silver;
+  text-indent:0;
   }
 
 /* ADDON CHAPTER-LINKS */
