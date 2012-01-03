@@ -82,6 +82,11 @@ if (rex_request('rexseo_func')!='') {
       die();
     break;
 
+    case 'rex_agk_delete_on.gif':
+      rex_send_file($path.'/files/rex_agk_delete_on.gif','image/gif');
+      die();
+    break;
+
     default:
     break;
   }
