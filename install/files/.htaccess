@@ -41,7 +41,7 @@ RewriteBase /
 ### REDIRECT SITEMAP.XML -> REXSEO SITEMAP FUNCTION (XML)
 RewriteRule ^sitemap\.xml$ index.php?rexseo_func=googlesitemap [NC,L]
 ### REDIRECT SITEMAP.JSON -> REXSEO SITEMAP FUNCTION (JSON FORMAT)
-# RewriteRule ^sitemap\.json$ index.php?rexseo_func=googlesitemap?mode=json [NC,L]
+# RewriteRule ^sitemap\.json$ index.php?rexseo_func=googlesitemap&mode=json [NC,L]
 
 ### REDIRECT ROBOTS.TXT -> REXSEO ROBOTS FUNCTION
 RewriteRule ^robots\.txt$ index.php?rexseo_func=robots [NC,L]
