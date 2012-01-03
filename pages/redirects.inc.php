@@ -221,8 +221,10 @@ elseif($func == 'edit' || $func == 'add')
   $field->setLabel('HTTP Status');
   $select =& $field->getSelect();
   $select->setSize(1);
-  $select->addOption('301',301);
-  $select->addOption('302',302);
+  $select->addOption('301 Moved Permanently',301);
+  $select->addOption('302 Found',302);
+  $select->addOption('303 See Other',303);
+  $select->addOption('307 Temporary Redirect',307);
 
   $field = &$form->addTextField('to_clang',null,array('style'=>'display:none;'));
   $stored_clang = $form->getElement('Redirect','to_clang')->value;
@@ -230,10 +232,10 @@ elseif($func == 'edit' || $func == 'add')
   $form->addFieldset('Infos');
 
   $field = &$form->addReadOnlyField('createdate',null,array('class'=>'rex-form-read unix-date'));
-  $field->setLabel('Erstellt');
+  $field->setLabel('Erstellungsdatum');
 
   $field = &$form->addReadOnlyField('updatedate',null,array('class'=>'rex-form-read unix-date'));
-  $field->setLabel('Geändert');
+  $field->setLabel('Änderungsdatum');
 
   $field = &$form->addTextField('expiredate',null,array('class'=>'rex-form-text unix-date-picker'));
   $field->setLabel('Verfallsdatum');

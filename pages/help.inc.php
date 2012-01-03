@@ -39,8 +39,8 @@ if ($func == 'setup_alert_disable')
 // CHAPTER DEFS ('CHAPTER GET PARAM' => array('TITLE','SOURCE','PARSEMODE'))
 ////////////////////////////////////////////////////////////////////////////////
 $chapterpages = array (
-''            => array('Quickstart',                   'pages/help_quickstart.txt','textile'),
-'settings'    => array('Einstellungen',                'pages/help_settings.txt','textile'),
+''            => array('Quickstart',                   'pages/help_quickstart.textile','textile'),
+'settings'    => array('Einstellungen',                'pages/help_settings.textile','textile'),
 'troubleshoot'=> array('Problemf&auml;lle & Sonstiges','pages/help_troubleshoot.txt','textile'),
 'download'    => array('Downloads'                    ,'pages/redmine_feeds.inc.php','php'),
 'changelog'   => array('Changelog'                    ,'pages/redmine_feeds.inc.php','php'),

@@ -28,9 +28,9 @@ require_once $myroot.'/functions/function.rexseo_helpers.inc.php';
 // HELP CONTENT
 ////////////////////////////////////////////////////////////////////////////////
 $help_includes = array (
-''            => array('Quickstart',                   'pages/help_quickstart.txt','textile'),
-'settings'    => array('Einstellungen',                'pages/help_settings.txt','textile'),
-'troubleshoot'=> array('Problemf&auml;lle & Sonstiges','pages/help_troubleshoot.txt','textile')
+''            => array('Quickstart',                   'pages/help_quickstart.textile','textile'),
+'settings'    => array('Einstellungen',                'pages/help_settings.textile','textile'),
+'troubleshoot'=> array('Problemf&auml;lle & Sonstiges','pages/help_troubleshoot.textile','textile')
 );
 
 
