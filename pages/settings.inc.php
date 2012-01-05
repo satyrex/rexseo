@@ -288,7 +288,8 @@ $auto_redirects_select = new rexseo_select();
 $auto_redirects_select->setSize(1);
 $auto_redirects_select->setName('auto_redirects');
 $auto_redirects_select->addOption('Inaktiv',0);
-$auto_redirects_select->addOption('Aktiv',1);
+$auto_redirects_select->addOption('Vollautomatisch (Redirects anlegen & aktivieren)',1);
+$auto_redirects_select->addOption('Halbautomatisch (Redirects anlegen aber inaktiv setzen)',2);
 $auto_redirects_select->setSelected($REX['ADDON'][$myself]['settings']['auto_redirects']);
 
 
@@ -438,13 +439,28 @@ echo '
       <fieldset class="rex-form-col-1">
         <legend>Weiterleitungen</legend>
         <div class="rex-form-wrapper">
+
+          <div class="rex-form-row">
+            <p class="rex-form-col-a rex-form-select">
+              <label for="auto_redirects" class="helptopic">Auto-Redirects:</label>
+                '.$auto_redirects_select->get().'
+            </p>
+          </div><!-- /rex-form-row -->
+
+
+          <div class="rex-form-row">
+            <p class="rex-form-col-a rex-form-text">
+              <label for="default_redirect_expire" class="helptopic">Default Expire:</label>
+              <input id="default_redirect_expire" class="rex-form-text" style="width:50px;" type="text" name="default_redirect_expire" value="'.stripslashes($REX['ADDON'][$myself]['settings']['default_redirect_expire']).'" /> Tage
+            </p>
+          </div><!-- /rex-form-row -->
 ';
 
 $db = new rex_sql;
 $qry = 'SELECT * FROM `rex_rexseo_redirects` ORDER BY `createdate` DESC';
 if(count($db->getDBArray($qry))>0)
 {
-  echo '<div style="max-height:300px;overflow:auto;">
+  echo '<div class="rex-form-row" style="max-height:300px;overflow:auto;">
               <table id="rexseo-redirect-list" class="rex-table">
               <tr>
                 <th>alte URL</th>
@@ -500,21 +516,6 @@ if(count($db->getDBArray($qry))>0)
 ';
 }
 echo '
-
-          <div class="rex-form-row">
-            <p class="rex-form-col-a rex-form-select">
-              <label for="auto_redirects" class="helptopic">Auto-Redirects:</label>
-                '.$auto_redirects_select->get().'
-            </p>
-          </div><!-- /rex-form-row -->
-
-
-          <div class="rex-form-row" style="border-top: 1px solid #CBCBCB;">
-            <p class="rex-form-col-a rex-form-text">
-              <label for="default_redirect_expire" class="helptopic">Default Expire:</label>
-              <input id="default_redirect_expire" class="rex-form-text" style="width:50px;" type="text" name="default_redirect_expire" value="'.stripslashes($REX['ADDON'][$myself]['settings']['default_redirect_expire']).'" /> Tage
-            </p>
-          </div><!-- /rex-form-row -->
 
 
         </div><!-- /rex-form-wrapper -->

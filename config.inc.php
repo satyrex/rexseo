@@ -142,7 +142,7 @@ if ($REX['REDAXO'])
 
 // AUTO CREATE REDIRECTS FROM CHANGED URLS
 ////////////////////////////////////////////////////////////////////////////////
-if ($REX['REDAXO'] && $REX['MOD_REWRITE'] !== false && $REX['ADDON'][$myself]['settings']['auto_redirects']==1)
+if ($REX['REDAXO'] && $REX['MOD_REWRITE'] !== false && $REX['ADDON'][$myself]['settings']['auto_redirects']!=0)
 {
   rex_register_extension('REXSEO_PATHLIST_BEFORE_REBUILD','rexseo_remember_prior_pathlist');
   function rexseo_remember_prior_pathlist($params)
@@ -165,9 +165,10 @@ if ($REX['REDAXO'] && $REX['MOD_REWRITE'] !== false && $REX['ADDON'][$myself]['s
       $qry = 'INSERT INTO `rex_rexseo_redirects` (`id`, `createdate`, `updatedate`, `expiredate`, `creator`, `status`, `from_url`, `to_article_id`, `to_clang`, `http_status`) VALUES';
       $date = time();
       $expire = $date + ($REX['ADDON']['rexseo']['settings']['default_redirect_expire']*24*60*60);
+      $status = $REX['ADDON']['rexseo']['settings']['auto_redirects']==1 ? 1 : 0;
       foreach($diff as $k=>$url)
       {
-        $qry .= PHP_EOL.'(\'\', \''.$date.'\', \''.$date.'\', \''.$expire.'\', \'rexseo\', 1, \''.$url.'\', '.$REX['REXSEO_PRIOR_URLS'][$url]['id'].', '.$REX['REXSEO_PRIOR_URLS'][$url]['clang'].', 301),';
+        $qry .= PHP_EOL.'(\'\', \''.$date.'\', \''.$date.'\', \''.$expire.'\', \'rexseo\', '.$status.', \''.$url.'\', '.$REX['REXSEO_PRIOR_URLS'][$url]['id'].', '.$REX['REXSEO_PRIOR_URLS'][$url]['clang'].', 301),';
       }
       $qry = rtrim($qry,',').';';
       $db->setQuery($qry);
