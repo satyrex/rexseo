@@ -282,6 +282,16 @@ $urlencode_select->addOption('Kodierung per urlencode',1);
 $urlencode_select->setSelected($REX['ADDON'][$myself]['settings']['urlencode']);
 
 
+// AUTO REDIRECTS SELECT BOX
+////////////////////////////////////////////////////////////////////////////////
+$auto_redirects_select = new rexseo_select();
+$auto_redirects_select->setSize(1);
+$auto_redirects_select->setName('auto_redirects');
+$auto_redirects_select->addOption('Inaktiv',0);
+$auto_redirects_select->addOption('Aktiv',1);
+$auto_redirects_select->setSelected($REX['ADDON'][$myself]['settings']['auto_redirects']);
+
+
 
 // EXPERT SETTINGS CHECKBOX OPTIONS
 ////////////////////////////////////////////////////////////////////////////////
@@ -490,6 +500,14 @@ if(count($db->getDBArray($qry))>0)
 ';
 }
 echo '
+
+          <div class="rex-form-row">
+            <p class="rex-form-col-a rex-form-select">
+              <label for="auto_redirects" class="helptopic">Auto-Redirects:</label>
+                '.$auto_redirects_select->get().'
+            </p>
+          </div><!-- /rex-form-row -->
+
 
           <div class="rex-form-row" style="border-top: 1px solid #CBCBCB;">
             <p class="rex-form-col-a rex-form-text">

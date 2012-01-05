@@ -97,6 +97,7 @@ $REX["ADDON"]["rexseo"]["settings"] = array (
   'urlencode' => 0,
   'allow_articleid' => 0,
   'levenshtein' => 0,
+  'auto_redirects' => '0',
   'default_redirect_expire' => 60,
   'robots' => 'User-agent: *
 Disallow:',
@@ -141,7 +142,7 @@ if ($REX['REDAXO'])
 
 // AUTO CREATE REDIRECTS FROM CHANGED URLS
 ////////////////////////////////////////////////////////////////////////////////
-if ($REX['REDAXO'] && $REX['MOD_REWRITE'] !== false)
+if ($REX['REDAXO'] && $REX['MOD_REWRITE'] !== false && $REX['ADDON'][$myself]['settings']['auto_redirects']==1)
 {
   rex_register_extension('REXSEO_PATHLIST_BEFORE_REBUILD','rexseo_remember_prior_pathlist');
   function rexseo_remember_prior_pathlist($params)

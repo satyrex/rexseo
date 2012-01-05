@@ -130,9 +130,12 @@ class RexseoRewrite
         switch($status)
         {
           case 301:
+          case 302:
+          case 303:
+          case 307:
             $redirect = array('id'    => $REXSEO_URLS[$path]['id'],
                               'clang' => $REXSEO_URLS[$path]['clang'],
-                              'status'=> 301);
+                              'status'=> $status);
             return self::redirect($redirect);
           default:
             if(isset($REXSEO_URLS[$path]['params']))
