@@ -50,20 +50,20 @@ Der Artikel wird ohne Weiterleitung angezeigt, der anfragende client erfährt _n
 Definiert ob Artikel nur über die genaue rewrite URL ausgegeben werden, oder ob versucht werden soll anhand Ähnlichkeiten der URL einen passenden Artikel zu finden und auszugeben.
 * *Weiterleitungen*
 Artikel für die eine Weiterleitung eingerichtet wurde, sind nachwievor unter der in der Weiterleitung angegebenen alten URL erreichbar, aber dem user agent (primär den Suchmaschinen) wird dabei einerseits mitgeteilt, daß die aufgerufene URL nicht mehr aktuell ist, und andererseits unter welcher neuen URL die Seite numehr erreichbar ist. Dadurch können Suchmaschinen gezielt ihren Index aktualisieren.
+## *Auto-Redirects:*
+Sofern in der Struktur (Kategorie/Artikelnamen), den Einstellugen von RexSEO, oder durch andere Addons Änderungen vorgenommen wurden, die zu geänderten URLs führen, können diese Änderungen vom Addon automatisch erkannt und eine passende Weiterleitung eingerichtet werden. Als Verfallsdatum wird der Wert aus *Default Expire* verwendet.
+*** *Vollautomatisch:* Redirects werden in die DB geschrieben und aktiviert.
+*** *Halbautomatisch:* Redirects werden nur in die DB geschrieben aber nicht aktiviert.
 ## *Default Expire:* Standardwert für das Verfallsdatum von Weiterleitungen.
 ## *Parameter einer Weiterleitung (DB-Datensatz):*
 *** *Status:* definiert ob die Weiterleitung aktiv ist
 *** *alte URL:* die URL unter welcher der Artikel vorher erreichbar war
 *** *umleiten nach:* der Artikel für den die Weiterleitung gilt
 *** *HTTP Status:* gibt dem aufrufenden user agent/Suchmaschine Informationen über Grund/Dauerhaftigkeit der Umleitung. "(blank)Details zu HTTP Status Codes":http://de.wikipedia.org/wiki/HTTP-Statuscode#3xx_.E2.80.93_Umleitung
-*** *Erstellungsdatum:* selbsterklärend..
-*** *Änderungsdatum:* selbsterklärend..
 *** *Verfallsdatum:* Datum bis zu welchem die Umleitung aktiviert ist.
 *** *Ersteller:* Wenn die Weiterleitung manuell erstellt wurde der login des erstellenden Users, bzw. "rexseo" falls automatisch von RexSEO angelegt.
 ## *Batch Submit*
 Weiterleitungen können wahlweise auch in einem Rutsch (wie in Vorversionen) in der dafür vorgesehenen textarea eingegeben werden. Die notwendigen Parameter für einen solchen batch submit sind *URL*, *Artikel-ID* und *Sprach-ID* getrennt durch Leerzeichen: @alter_pfad/alter_artikel.html 4 0@ Als HTTP Status wird 301 verwendet.
-## *Automatische Weiterleitungen*
-Sofern in der Struktur (Kategorie/Artikelnamen), den Einstellugen von RexSEO, oder durch andere Addons Änderungen vorgenommen wurden, die zu geänderten URLs führen, werden diese Änderungen vom Addon automatisch erkannt und eine passende Weiterleitung eingerichtet. Als Verfallsdatum wird der Wert aus *Default Expire* verwendet.
 * *robots.txt:*
 Diese Datei dient als "Hausordnung" und steuert ob bzw. wie die Webseite von einer Suchmaschine indiziert werden darf. Die von RexSEO vorgenommene Standard-Einstellung erlaubt alle Suchmaschinen und alle Bereiche der Webseite. Außerdem wird in ihr auf die "(blank)Google sitemap":http://de.wikipedia.org/wiki/Sitemaps verlinkt, welche von RexSEO automatisch erzeugt wird. Details für gezielte Anpassung können u.a. in diesem "(blank)Wikipedia Artikel zu robots.txt":http://de.wikipedia.org/wiki/Robots_Exclusion_Standard nachgeschlagen werden.
 
