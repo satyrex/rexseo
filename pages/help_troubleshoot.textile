@@ -32,6 +32,9 @@ $("a[href^='\#']").click(function(e){
   document.location.hash=this.href.substr(this.href.indexOf('#')+1);
 })
 
+*Hinweis:* Dieses script benötigt die "(jsopenwin)jQuery lib":http://jquery.com/ .
+Es sollte ferner nicht im @head@ Bereich des Templates stehen sondern am Ende vor @body@.
+
 h1. Sprachspezifische Zeichenersetzung in URLS
 
 Rexseo benutzt die Zeichenersetzung aus dem Redaxo Core, daher ist die verwendete Zeichentabelle nicht in Rexseo definiert, sondern in den Sprachdateien von Redaxo (@/redaxo/include/lang/*.lang@):
