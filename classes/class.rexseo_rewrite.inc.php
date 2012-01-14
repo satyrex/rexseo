@@ -211,7 +211,24 @@ class RexseoRewrite
     else
     {
       $url = $REXSEO_IDS[$notfound_id][$clang]['url'];
-      self::logError('article (id='.$id.'/clang='.$clang.') does not exists',E_USER_WARNING);
+      $log = true;
+
+      // CATCH INTERNAL LINK FROM REX_A79_HELP_OVERVIEW()
+      if($id==7)
+      {
+        foreach(debug_backtrace() as $t)
+        {
+          if($t['function']=='rex_a79_textile' && $t['args'][0] == 'Link (intern) mit Anker: "zu unseren AGBs":redaxo://7#AGB')
+          {
+            $log = false;
+          }
+        }
+      }
+
+      if($log)
+      {
+        self::logError('article (id='.$id.'/clang='.$clang.') does not exists',E_USER_WARNING);
+      }
     }
 
     // SUBDIR
