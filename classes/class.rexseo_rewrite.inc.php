@@ -227,7 +227,7 @@ class RexseoRewrite
 
       if($log)
       {
-        self::logError('article (id='.$id.'/clang='.$clang.') does not exists',E_USER_WARNING);
+        self::logError('article (id='.$id.'/clang='.$clang.') does not exist',E_USER_WARNING);
       }
     }
 
@@ -463,7 +463,12 @@ function rexseo_generate_pathlist($params)
   if($where != '')
   {
     $db = new rex_sql();
-    $db->setQuery('SELECT `id`, `clang`, `path`, `startpage`,`art_rexseo_url` FROM '. $REX['TABLE_PREFIX'] .'article WHERE '. $where.' AND revision=0 OR revision=NULL');
+
+     // revision fix
+    $db->setQuery('UPDATE '. $REX['TABLE_PREFIX'] .'article SET revision = 0 WHERE revision IS NULL;');
+    $db->setQuery('UPDATE '. $REX['TABLE_PREFIX'] .'article_slice SET revision = 0 WHERE revision IS NULL;');
+
+    $db->setQuery('SELECT `id`, `clang`, `path`, `startpage`,`art_rexseo_url` FROM '. $REX['TABLE_PREFIX'] .'article WHERE '. $where.' AND revision=0 OR revision IS NULL');
 
     while($db->hasNext())
     {
