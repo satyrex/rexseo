@@ -21,7 +21,7 @@
 $myself            = 'rexseo';
 $myroot            = $REX['INCLUDE_PATH'].'/addons/'.$myself;
 
-$minimum_REX       = '4.2.1';
+$minimum_REX       = '4.2.0';
 $minimum_PHP       = 5;
 $required_addons   = array('textile','metainfo','cronjob');
 $disable_addons    = array('url_rewrite');
@@ -39,7 +39,7 @@ if(version_compare($REX['VERSION'].'.'.$REX['SUBVERSION'].'.'.$REX['MINORVERSION
 
 // CHECK PHP VERSION
 ////////////////////////////////////////////////////////////////////////////////
-if (intval(PHP_VERSION) < $minimum_PHP)
+if(version_compare(PHP_VERSION, $minimum_PHP, '<'))
 {
   $error[] = 'Dieses Addon ben&ouml;tigt mind. PHP '.$minimum_PHP.'!';
 }
