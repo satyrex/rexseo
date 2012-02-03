@@ -39,13 +39,14 @@ if ($func == 'setup_alert_disable')
 // CHAPTER DEFS ('CHAPTER GET PARAM' => array('TITLE','SOURCE','PARSEMODE'))
 ////////////////////////////////////////////////////////////////////////////////
 $chapterpages = array (
-''            => array('Quickstart',                   'pages/help_quickstart.textile','textile'),
-'settings'    => array('Einstellungen',                'pages/help_settings.textile','textile'),
-'troubleshoot'=> array('Problemf&auml;lle & Sonstiges','pages/help_troubleshoot.textile','textile'),
-'download'    => array('Downloads'                    ,'pages/redmine_feeds.inc.php','php'),
+''            => array('Quickstart',                   'pages/help_quickstart.textile'          ,'textile'),
+'settings'    => array('Einstellungen',                'pages/help_settings.textile'            ,'textile'),
+'troubleshoot'=> array('Problemf&auml;lle & Sonstiges','pages/help_troubleshoot.textile'        ,'textile'),
+'log'         => array('Error Log                    ','pages/rexseo.log'                       ,'txt'),
+'download'    => array('Downloads'                    ,'pages/redmine_feeds.inc.php'            ,'php'),
 'wiki'        => array('Wiki'                         ,'http://gn2-code.de/projects/rexseo/wiki','jsopenwin'),
-'changelog'   => array('Changelog'                    ,'pages/redmine_feeds.inc.php','php'),
-'tickets'     => array('Tickets'                      ,'pages/redmine_feeds.inc.php','php')
+'changelog'   => array('Changelog'                    ,'pages/redmine_feeds.inc.php'            ,'php'),
+'tickets'     => array('Tickets'                      ,'pages/redmine_feeds.inc.php'            ,'php')
 
 );
 

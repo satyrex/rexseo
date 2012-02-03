@@ -37,13 +37,25 @@ class RexseoRewrite
   /**
   * LOGERROR()
   */
-  private function logError($err_txt=false,$err_type=false)
+  private function logError($err_txt=false,$err_type=false,$trace=false)
   {
-      if(!$err_type)
-        $err_type = 'E_USER_NOTICE';
+    global $REX;
 
-      $err_txt = 'CLASS REXSEO_REWRITE: '.$err_txt.'.';
-      trigger_error($err_txt, $err_type);
+    if(!$err_type)
+      $err_type = 'E_USER_NOTICE';
+
+    $err_txt = 'CLASS REXSEO_REWRITE: '.$err_txt.'.';
+    trigger_error($err_txt, $err_type);
+
+    $logfile = $REX['INCLUDE_PATH'].'/addons/rexseo/pages/rexseo.log';
+    $log_content = file_exists($logfile) ? rex_get_file_contents($logfile) : '';
+    $log_content = $log_content!='empty..' ? $log_content : '';
+
+    $new_entry = str_pad('### '.date("d.m.Y H:i").' ',80, "#").PHP_EOL.$err_txt.PHP_EOL;
+    if(is_array($trace))
+      $new_entry .= 'BACKTRACE:'.PHP_EOL.var_export($trace,true).PHP_EOL.PHP_EOL;
+
+    rex_put_file_contents($logfile,$new_entry .$log_content);
   }
 
 
@@ -210,25 +222,9 @@ class RexseoRewrite
     }
     else
     {
-      $url = $REXSEO_IDS[$notfound_id][$clang]['url'];
-      $log = true;
-
-      // CATCH INTERNAL LINK FROM REX_A79_HELP_OVERVIEW()
-      if($id==7)
-      {
-        foreach(debug_backtrace() as $t)
-        {
-          if($t['function']=='rex_a79_textile' && $t['args'][0] == 'Link (intern) mit Anker: "zu unseren AGBs":redaxo://7#AGB')
-          {
-            $log = false;
-          }
-        }
-      }
-
-      if($log)
-      {
-        self::logError('article (id='.$id.'/clang='.$clang.') does not exist',E_USER_WARNING);
-      }
+      $url   = $REXSEO_IDS[$notfound_id][$clang]['url'];
+      $trace = debug_backtrace();
+      self::logError('article (id='.$id.'/clang='.$clang.') does not exist',E_USER_WARNING,$trace);
     }
 
     // SUBDIR
