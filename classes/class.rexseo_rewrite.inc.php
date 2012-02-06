@@ -573,8 +573,11 @@ function rexseo_generate_pathlist($params)
   // EXTENSION POINT "REXSEO_PATHLIST_FINAL" - READ ONLY
   rex_register_extension_point('REXSEO_PATHLIST_FINAL',$subject);
 
+  // CACHE INSTALL SUBDIR
+  $pathlist_content = '$REX[\'ADDON\'][\'rexseo\'][\'settings\'][\'install_subdir\'] = \''.rexseo_subdir().'\';'.PHP_EOL;
+
   // ASSEMBLE, COMPRESS & WRITE PATHLIST TO FILE
-  $pathlist_content = '$REXSEO_IDS = '.var_export($subject['REXSEO_IDS'],true).';'.PHP_EOL.'$REXSEO_URLS = '.var_export($subject['REXSEO_URLS'],true).';';
+  $pathlist_content .= '$REXSEO_IDS = '.var_export($subject['REXSEO_IDS'],true).';'.PHP_EOL.'$REXSEO_URLS = '.var_export($subject['REXSEO_URLS'],true).';';
 
   $pathlist_content = rexseo_compressPathlist($pathlist_content);
 
