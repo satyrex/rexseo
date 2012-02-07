@@ -438,11 +438,12 @@ function rexseo_htaccess_update_redirects()
 {
   global $REX;                                                                  #FB::group('rexseo_htaccess_update_redirects()');
 
+  $table = $REX['TABLE_PREFIX'].'rexseo_redirects';
   $db = new rex_sql;
   $redirects = array();
   $now = time();
-  $qry = 'SELECT * FROM rex_rexseo_redirects WHERE `status`=1 ORDER BY `createdate` DESC;';
-  $qry = 'SELECT * FROM rex_rexseo_redirects ORDER BY `createdate` DESC;';
+  #$qry = 'SELECT * FROM `'.$table.'` WHERE `status`=1 ORDER BY `createdate` DESC;';
+  $qry = 'SELECT * FROM `'.$table.'` ORDER BY `createdate` DESC;';
 
   foreach($db->getDBArray($qry) as $r)
   {
@@ -514,14 +515,17 @@ Bitte die .htaccess auf <a>korrektes redirects delimiter Paar</a> überprüfen.'
 ////////////////////////////////////////////////////////////////////////////////
 function rexseo_update_redirect($id,$status=2,$func='update')
 {
+  global $REX;
+
+  $table = $REX['TABLE_PREFIX'].'rexseo_redirects';
   $db = new rex_sql;
   switch($func)
   {
   case 'delete':
-    return $db->setQuery('DELETE FROM `rex_rexseo_redirects` WHERE `id`='.$id.' AND `creator`=\'rexseo\';');
+    return $db->setQuery('DELETE FROM `'.$table.'` WHERE `id`='.$id.' AND `creator`=\'rexseo\';');
     break;
 
   default:
-    return $db->setQuery('UPDATE `rex_rexseo_redirects` SET `status`='.$status.' WHERE `id`='.$id.';');
+    return $db->setQuery('UPDATE `'.$table.'` SET `status`='.$status.' WHERE `id`='.$id.';');
   }
 }
