@@ -39,10 +39,10 @@ if($func=='batch-submit')
   if($batch!='false')
   {
     $db = new rex_sql;
-    $qry = 'INSERT INTO `rex_rexseo_redirects` (`id`, `createdate`, `updatedate`, `expiredate`, `creator`, `status`, `from_url`, `to_article_id`, `to_clang`, `http_status`) VALUES';
+    $qry = 'INSERT INTO `'.$table.'` (`id`, `createdate`, `updatedate`, `expiredate`, `creator`, `status`, `from_url`, `to_article_id`, `to_clang`, `http_status`) VALUES';
     $batch = rexseo_301_2_array($batch);
     $date = time();
-    $expire = $date + ($REX['ADDON']['rexseo']['settings']['default_redirect_expire']*24*60*60); FB::log($REX['ADDON']['rexseo']['settings']['default_redirect_expire']*24*60*60,'$REX["ADDON"]["rexseo"]["settings"]["default_redirect_expire"]*24*60*60');
+    $expire = $date + ($REX['ADDON']['rexseo']['settings']['default_redirect_expire']*24*60*60);
     foreach($batch as $k=>$v)
     {
       $qry .= PHP_EOL.'(\'\', \''.$date.'\', \''.$date.'\', \''.$expire.'\', \''.$REX['USER']->getValue('login').'\', 1, \''.$k.'\', '.$v['article_id'].', '.$v['clang'].', 301),';

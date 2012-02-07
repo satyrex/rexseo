@@ -22,6 +22,7 @@ $myself  = rex_request('page',            'string');
 $subpage = rex_request('subpage',         'string');
 $func    = rex_request('func',            'string');
 $backup  = $REX['INCLUDE_PATH'].'/backup/addons/rexseo/config.inc.php';
+$table   = $REX['TABLE_PREFIX'].'rexseo_redirects';
 
 // SETTINGS PARAMS
 ////////////////////////////////////////////////////////////////////////////////
@@ -97,13 +98,13 @@ if($REX['ADDON'][$myself]['settings']['first_run'] == 1 && file_exists($backup))
 
   // IMPORT REDIRECTS FROM BACKUP CONFIG TO DB
   $db = new rex_sql;
-  $db->setQuery('SELECT * FROM `rex_rexseo_redirects`;');
+  $db->setQuery('SELECT * FROM `'.$table.'`;');
 
   if(isset($REX['ADDON']['rexseo']['settings']['301s']) && 
      count($REX['ADDON']['rexseo']['settings']['301s'])>0 &&
      $db->getRows()==0)
   {
-    $qry = 'INSERT INTO `rex_rexseo_redirects` (`id`, `createdate`, `updatedate`, `expiredate`, `creator`, `status`, `from_url`, `to_article_id`, `to_clang`, `http_status`) VALUES';
+    $qry = 'INSERT INTO `'.$table.'` (`id`, `createdate`, `updatedate`, `expiredate`, `creator`, `status`, `from_url`, `to_article_id`, `to_clang`, `http_status`) VALUES';
     $date = time();
     if(!isset($REX['ADDON'][$myself]['settings']['default_redirect_expire']))
       $REX['ADDON'][$myself]['settings']['default_redirect_expire'] = 60;
@@ -136,7 +137,7 @@ if($REX['ADDON'][$myself]['settings']['install_subdir'] != rexseo_subdir())
 if(rex_request('func','string')=='toggle_redirect' && intval(rex_request('id','int'))>0)
 {
   $db = new rex_sql;
-  $db->setQuery('UPDATE `rex_rexseo_redirects` SET `status` = IF(status=1, 0, 1) WHERE `id`='.rex_request('id','int').';');
+  $db->setQuery('UPDATE `'.$table.'` SET `status` = IF(status=1, 0, 1) WHERE `id`='.rex_request('id','int').';');
   rexseo_htaccess_update_redirects();
 }
 
@@ -146,7 +147,7 @@ if(rex_request('func','string')=='toggle_redirect' && intval(rex_request('id','i
 if(rex_request('func','string')=='delete_redirect' && intval(rex_request('id','int'))>0)
 {
   $db = new rex_sql;
-  $db->setQuery('DELETE FROM `rex_rexseo_redirects` WHERE `id`='.rex_request('id','int').';');
+  $db->setQuery('DELETE FROM `'.$table.'` WHERE `id`='.rex_request('id','int').';');
   rexseo_htaccess_update_redirects();
 }
 
@@ -467,7 +468,7 @@ echo '
 ';
 
 $db = new rex_sql;
-$qry = 'SELECT * FROM `rex_rexseo_redirects` ORDER BY `createdate` DESC';
+$qry = 'SELECT * FROM `'.$table.'` ORDER BY `createdate` DESC';
 if(count($db->getDBArray($qry))>0)
 {
   echo '<div class="rex-form-row" style="max-height:300px;overflow:auto;">
