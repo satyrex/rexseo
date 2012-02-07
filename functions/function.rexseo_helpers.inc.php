@@ -436,7 +436,7 @@ function rexseo_inject_301($params)
 ////////////////////////////////////////////////////////////////////////////////
 function rexseo_htaccess_update_redirects()
 {
-  global $REX;                                                                  #FB::group('rexseo_htaccess_update_redirects()');
+  global $REX;                                                                  #FB::group(__FUNCTION__);
 
   $table = $REX['TABLE_PREFIX'].'rexseo_redirects';
   $db = new rex_sql;
@@ -452,22 +452,27 @@ function rexseo_htaccess_update_redirects()
 
     if($from_url==$target_url) /*1:1 loop*/
     {
-      rexseo_update_redirect($r['id'],2,'delete');                              #FB::log($r['id'],'$from_url==$target_url');
+      rexseo_update_redirect($r['id'],2,'delete');                              #FB::info($r['id'],'$from_url==$target_url');
+      continue;
+    }
+    elseif($from_url=='/' || $from_url=='' || $target_url=='/') /*root loop*/
+    {
+      rexseo_update_redirect($r['id'],2,'delete');                              #FB::info($r['id'],'$from_url=="/" || $from_url==""');
       continue;
     }
     elseif(isset($redirects[$from_url])) /*duplicate*/
     {
-      rexseo_update_redirect($r['id'],3,'update');                              #FB::log($r['id'],'$redirects[$from_url]');
+      rexseo_update_redirect($r['id'],3,'update');                              #FB::info($r['id'],'$redirects[$from_url]');
       continue;
     }
     elseif(isset($redirects[$target_url])) /*2nd level loop*/
     {
-      rexseo_update_redirect($r['id'],4,'update');                              #FB::log($r['id'],'redirects[$target_url]');
+      rexseo_update_redirect($r['id'],4,'update');                              #FB::info($r['id'],'redirects[$target_url]');
       continue;
     }
     elseif($r['expiredate']<$now) /*expired*/
     {
-      rexseo_update_redirect($r['id'],5,'update');                              #FB::log($r['id'],'redirects[$target_url]');
+      rexseo_update_redirect($r['id'],5,'update');                              #FB::info($r['id'],'redirects[$target_url]');
       continue;
     }
     elseif($r['status']==1)
@@ -515,17 +520,20 @@ Bitte die .htaccess auf <a>korrektes redirects delimiter Paar</a> überprüfen.'
 ////////////////////////////////////////////////////////////////////////////////
 function rexseo_update_redirect($id,$status=2,$func='update')
 {
-  global $REX;
+  global $REX;                                                                  #FB::group(__FUNCTION__);
 
   $table = $REX['TABLE_PREFIX'].'rexseo_redirects';
   $db = new rex_sql;
   switch($func)
   {
   case 'delete':
-    return $db->setQuery('DELETE FROM `'.$table.'` WHERE `id`='.$id.' AND `creator`=\'rexseo\';');
+    #$qry = 'DELETE FROM `'.$table.'` WHERE `id`='.$id.' AND `creator`=\'rexseo\';';
+    $qry = 'DELETE FROM `'.$table.'` WHERE `id`='.$id.';';                      #FB::log($qry,'$qry');FB::groupEnd();
+    return $db->setQuery($qry);
     break;
 
   default:
-    return $db->setQuery('UPDATE `'.$table.'` SET `status`='.$status.' WHERE `id`='.$id.';');
+    $qry = 'UPDATE `'.$table.'` SET `status`='.$status.' WHERE `id`='.$id.';';  #FB::log($qry,'$qry');FB::groupEnd();
+    return $db->setQuery($qry);
   }
 }

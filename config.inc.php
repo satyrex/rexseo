@@ -136,7 +136,7 @@ if ($REX['REDAXO'])
   rex_register_extension('REX_FORM_SAVED','rexseo_ht_update_callback');
   function rexseo_ht_update_callback($params)
   {
-    rexseo_htaccess_update_redirects();
+    rexseo_htaccess_update_redirects();                                         #FB::log($params,__FUNCTION__.' $params');
   }
 }
 
