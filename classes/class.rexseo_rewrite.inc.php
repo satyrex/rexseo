@@ -47,15 +47,18 @@ class RexseoRewrite
     $err_txt = 'CLASS REXSEO_REWRITE: '.$err_txt.'.';
     trigger_error($err_txt, $err_type);
 
-    $logfile = $REX['INCLUDE_PATH'].'/addons/rexseo/pages/rexseo.log';
-    $log_content = file_exists($logfile) ? rex_get_file_contents($logfile) : '';
-    $log_content = $log_content!='empty..' ? $log_content : '';
-
-    $new_entry = str_pad('### '.date("d.m.Y H:i").' ',80, "#").PHP_EOL.$err_txt.PHP_EOL;
-    if(is_array($trace))
-      $new_entry .= 'BACKTRACE:'.PHP_EOL.var_export($trace,true).PHP_EOL.PHP_EOL;
-
-    rex_put_file_contents($logfile,$new_entry .$log_content);
+    if($REX['ADDON'][$myself]['settings']['debug']==1)
+    {
+      $logfile = $REX['INCLUDE_PATH'].'/addons/rexseo/pages/rexseo.log';
+      $log_content = file_exists($logfile) ? rex_get_file_contents($logfile) : '';
+      $log_content = $log_content!='empty..' ? $log_content : '';
+  
+      $new_entry = str_pad('### '.date("d.m.Y H:i").' ',80, "#").PHP_EOL.$err_txt.PHP_EOL;
+      if(is_array($trace))
+        $new_entry .= 'BACKTRACE:'.PHP_EOL.var_export($trace,true).PHP_EOL.PHP_EOL;
+  
+      rex_put_file_contents($logfile,$new_entry .$log_content);
+    }
   }
 
 
