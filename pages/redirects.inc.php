@@ -39,12 +39,13 @@ if($func=='batch-submit')
   if($batch!='false')
   {
     $db = new rex_sql;
-    $qry = 'INSERT INTO `rex_rexseo_redirects` (`id`, `createdate`, `updatedate`, `creator`, `status`, `from_url`, `to_article_id`, `to_clang`, `http_status`) VALUES';
+    $qry = 'INSERT INTO `rex_rexseo_redirects` (`id`, `createdate`, `updatedate`, `expiredate`, `creator`, `status`, `from_url`, `to_article_id`, `to_clang`, `http_status`) VALUES';
     $batch = rexseo_301_2_array($batch);
     $date = time();
+    $expire = $date + ($REX['ADDON']['rexseo']['settings']['default_redirect_expire']*24*60*60); FB::log($REX['ADDON']['rexseo']['settings']['default_redirect_expire']*24*60*60,'$REX["ADDON"]["rexseo"]["settings"]["default_redirect_expire"]*24*60*60');
     foreach($batch as $k=>$v)
     {
-      $qry .= PHP_EOL.'(\'\', \''.$date.'\', \''.$date.'\', \''.$REX['USER']->getValue('login').'\', 1, \''.$k.'\', '.$v['article_id'].', '.$v['clang'].', 301),';
+      $qry .= PHP_EOL.'(\'\', \''.$date.'\', \''.$date.'\', \''.$expire.'\', \''.$REX['USER']->getValue('login').'\', 1, \''.$k.'\', '.$v['article_id'].', '.$v['clang'].', 301),';
     }
     $qry = rtrim($qry,',').';';
 
@@ -58,7 +59,6 @@ if($func=='batch-submit')
 /////////////////////////////////////////////////////////////////////////////////
 if($func == '' || $func=='batch-submit')
 {
-  /* LISTE ------------------------------------------------------------------ */
    echo '<div class="rex-addon-output">
    <h2 class="rex-hl2">Redirects <span style="color:silver;font-size:12px;">(DB Tabelle: '.$table.')</span></h2>';
 
@@ -138,7 +138,7 @@ if($func == '' || $func=='batch-submit')
 
   echo '</div>';
   
-  // FORM
+// BATCH SUBMIT FORM
 ////////////////////////////////////////////////////////////////////////////////
 echo '
 
@@ -183,13 +183,16 @@ echo '
   
 }
 
+// ADD/EDIT FORM
+////////////////////////////////////////////////////////////////////////////////
 elseif($func == 'edit' || $func == 'add')
 {
-  /* ADD/EDIT FORMULAR ------------------------------------------------------ */
+  $date = time();
+  $expire = $date + ($REX['ADDON']['rexseo']['settings']['default_redirect_expire']*24*60*60);
+  $user = $REX['USER']->getValue('login');
 
   echo '<div class="rex-addon-output">';
 
-  // Pberschrift je nach Funktion ADD/EDIT
   if($func == 'edit')
   {
     echo '<h2 class="rex-hl2">Redirect bearbeiten <span style="color:silver;font-size:12px;">(ID: '.$id.')</span></h2>';
@@ -201,7 +204,6 @@ elseif($func == 'edit' || $func == 'add')
 
 
   $form = new rex_form($table,'Redirect','id='.$id,'post',false);
-
 
   $field =& $form->addSelectField('status');
   $field->setLabel('Status');
@@ -231,29 +233,36 @@ elseif($func == 'edit' || $func == 'add')
 
   $form->addFieldset('Infos');
 
-  $field = &$form->addReadOnlyField('createdate',null,array('class'=>'rex-form-read unix-date'));
-  $field->setLabel('Erstellungsdatum');
+  if($func == 'edit')
+  {
+    $field = &$form->addReadOnlyField('createdate',null,array('class'=>'rex-form-read unix-date'));
+    $field->setLabel('Erstellungsdatum');
+  
+    $field = &$form->addReadOnlyField('updatedate',null,array('class'=>'rex-form-read unix-date'));
+    $field->setLabel('Änderungsdatum');
+  }
 
-  $field = &$form->addReadOnlyField('updatedate',null,array('class'=>'rex-form-read unix-date'));
-  $field->setLabel('Änderungsdatum');
-
-  $field = &$form->addTextField('expiredate',null,array('class'=>'rex-form-text unix-date-picker'));
+  $field = &$form->addTextField('expiredate',$expire,array('class'=>'rex-form-text unix-date-picker'));
   $field->setLabel('Verfallsdatum');
 
-  $field = &$form->addReadOnlyField('creator');
-  $field->setLabel('Ersteller');
+  if($func == 'edit')
+  {
+    $field = &$form->addReadOnlyField('creator');
+    $field->setLabel('Ersteller');
+  }
    
 
   if($func == 'edit')
   {
     $form->addParam('id', $id);
-    $form->addParam('updatedate', time());
+    $form->addHiddenField('updatedate', time());
   }
 
   if($func == 'add')
   {
-    $form->addParam('updatedate', time());
-    $form->addParam('createdate', time());
+    $form->addHiddenField('creator', $user);
+    $form->addHiddenField('updatedate', time());
+    $form->addHiddenField('createdate', time());
   }
 
   $form->show();
@@ -298,13 +307,13 @@ jQuery(function($) {
 
     $("span.rex-form-read.unix-date").each(function() {
       d = new Date($(this).html() * 1000);
-      $(this).html(d.getDate()+"."+d.getMonth()+"."+d.getFullYear()+" - "+d.getHours()+":"+d.getMinutes()+"h");
+      $(this).html(d.getDate()+"."+(d.getMonth()+1)+"."+d.getFullYear()+" - "+d.getHours()+":"+d.getMinutes()+"h");
     });
 
     $("#rex_rexseo_redirects_Infos_expiredate").css("display","none");
     v = $("#rex_rexseo_redirects_Infos_expiredate").val();
     d = new Date(v * 1000);
-    $(".unix-date-picker").append(\'<input type="text" style="width:100px" id="formated-date" value="\'+d.getDate()+"."+d.getMonth()+"."+d.getFullYear()+\'" /> (D.M.YYYY)\');
+    $(".unix-date-picker").append(\'<input type="text" style="width:100px" id="formated-date" value="\'+d.getDate()+"."+(d.getMonth()+1)+"."+d.getFullYear()+\'" /> (D.M.YYYY)\');
 
   }); //jQuery(document).ready(function()
 
@@ -318,10 +327,31 @@ jQuery(function($) {
     u = $(this).val().split(".");
     if(u[0]<10) u[0]="0"+u[0];
     if(u[1]<10) u[1]="0"+u[1];
-    d = new Date(u[2],u[1],u[0]);
+    d = new Date(u[2],u[1]-1,u[0]);
     $("#rex_rexseo_redirects_Infos_expiredate").val(d.getTime()/1000);
     });
 
+  $("#rex_rexseo_redirects_Redirect_save").click(function(){
+    if($("#rex_rexseo_redirects_Redirect_from_url").val()==""){
+      alert("Alte URL definieren!");
+      return false;
+    }
+    if($("#LINK_1").val()==0){
+      alert("Umleitungs URL definieren!");
+      return false;
+    }
+  });
+
+  $("#rex_rexseo_redirects_Redirect_apply").click(function(){
+    if($("#rex_rexseo_redirects_Redirect_from_url").val()==""){
+      alert("Alte URL definieren!");
+      return false;
+    }
+    if($("#LINK_1").val()==0){
+      alert("Umleitungs URL definieren!");
+      return false;
+    }
+  });
 
 }); // jQuery(function($)
 //-->
