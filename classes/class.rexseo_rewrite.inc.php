@@ -47,7 +47,7 @@ class RexseoRewrite
     $err_txt = 'CLASS REXSEO_REWRITE: '.$err_txt.'.';
     trigger_error($err_txt, $err_type);
 
-    if($REX['ADDON'][$myself]['settings']['debug']==1)
+    if($REX['ADDON']['rexseo']['debug_log']==1 && $trace!=false)
     {
       $logfile = $REX['INCLUDE_PATH'].'/addons/rexseo/pages/rexseo.log';
       $log_content = file_exists($logfile) ? rex_get_file_contents($logfile) : '';
@@ -226,7 +226,7 @@ class RexseoRewrite
     else
     {
       $url   = $REXSEO_IDS[$notfound_id][$clang]['url'];
-      $trace = debug_backtrace();
+      $trace = $REX['ADDON']['rexseo']['debug_log']==1 ? debug_backtrace() : false;
       self::logError('article (id='.$id.'/clang='.$clang.') does not exist',E_USER_WARNING,$trace);
     }
 

@@ -43,8 +43,8 @@ $REX['ADDON'][$myself]['SUBPAGES']    = array (
   );
 $REX['ADDON'][$myself]['redmine_url'] = 'http://www.gn2-code.de/projects/rexseo';
 $REX['ADDON'][$myself]['redmine_key'] = '2437c4f8172c5c6e0020a236b576d5128029451b';
+$REX['ADDON'][$myself]['debug_log']   = 0;
 $REX['ADDON'][$myself]['settings']['default_redirect_expire'] = 60;
-$REX['ADDON'][$myself]['settings']['debug'] = 0;
 $REX['PROTOCOL'] = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https://' : 'http://';
 
 
