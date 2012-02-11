@@ -15,7 +15,7 @@
 --  * @version svn:$Id$
 --  */
 
-CREATE TABLE IF NOT EXISTS `rex_rexseo_redirects` (
+CREATE TABLE IF NOT EXISTS `%TABLE_PREFIX%rexseo_redirects` (
   `id` int(4) NOT NULL AUTO_INCREMENT,
   `createdate` int(11) NOT NULL,
   `updatedate` int(11) NOT NULL,
@@ -29,5 +29,5 @@ CREATE TABLE IF NOT EXISTS `rex_rexseo_redirects` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
-INSERT INTO `rex_630_cronjobs` (`id`, `name`, `type`, `parameters`, `interval`, `nexttime`, `environment`, `status`, `createdate`, `createuser`, `updatedate`, `updateuser`) VALUES
+INSERT INTO `%TABLE_PREFIX%630_cronjobs` (`id`, `name`, `type`, `parameters`, `interval`, `nexttime`, `environment`, `status`, `createdate`, `createuser`, `updatedate`, `updateuser`) VALUES
 ('', 'RexSEO Redirect Expire', 'rex_cronjob_phpcode', 'a:1:{s:24:"rex_cronjob_phpcode_code";s:35:"rexseo_htaccess_update_redirects();";}', '|1|d|', 0, '|0|1|', 1, CURDATE(), 'rexseo', CURDATE(), 'rexseo');
