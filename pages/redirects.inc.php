@@ -51,6 +51,9 @@ if($func=='batch-submit')
 
     if($db->setQuery($qry))
       echo rex_info('Weiterleitungen wurden in Tabelle gespeichert.');
+
+    if(rexseo_htaccess_update_redirects())
+      echo rex_info('Weiterleitungen wurden in die .htaccess geschrieben.');
   }
 }
 
