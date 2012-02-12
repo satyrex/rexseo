@@ -190,10 +190,6 @@ echo '
 ////////////////////////////////////////////////////////////////////////////////
 elseif($func == 'edit' || $func == 'add')
 {
-  $date = time();
-  $expire = $date + ($REX['ADDON']['rexseo']['settings']['default_redirect_expire']*24*60*60);
-  $user = $REX['USER']->getValue('login');
-
   echo '<div class="rex-addon-output">';
 
   if($func == 'edit')
@@ -245,6 +241,8 @@ elseif($func == 'edit' || $func == 'add')
     $field->setLabel('Änderungsdatum');
   }
 
+  $expire = ($func == 'edit') ? null : time() + ($REX['ADDON']['rexseo']['settings']['default_redirect_expire']*24*60*60);
+
   $field = &$form->addTextField('expiredate',$expire,array('class'=>'rex-form-text unix-date-picker'));
   $field->setLabel('Verfallsdatum');
 
@@ -263,7 +261,7 @@ elseif($func == 'edit' || $func == 'add')
 
   if($func == 'add')
   {
-    $form->addHiddenField('creator', $user);
+    $form->addHiddenField('creator', $REX['USER']->getValue('login'));
     $form->addHiddenField('updatedate', time());
     $form->addHiddenField('createdate', time());
   }
@@ -290,6 +288,9 @@ echo '
   </span>
   </p>
 </div>
+';
+}
+?>
 
 <script type="text/javascript">
 <!--
@@ -297,43 +298,52 @@ jQuery(function($) {
 
 
   jQuery(document).ready(function() {
-    $(\'p.rex-widget-icons\').replaceWith($(\'p#clang-link-buttons\'));
+  
+    // MULTILANG LINK BUTTON HACK
+    $('p.rex-widget-icons').replaceWith($('p#clang-link-buttons'));
 
-    $(\'#clang-hack\').attr(\'article_id\',$(\'#LINK_1\').val());
-    $(\'#clang-hack\').attr(\'clang\',$(\'#rex_rexseo_redirects_Redirect_to_clang\').val());
+    $('#clang-hack').attr('article_id',$('#LINK_1').val());
+    $('#clang-hack').attr('clang',$('#rex_rexseo_redirects_Redirect_to_clang').val());
 
     $(document).focus(function(){
-      if($(\'#LINK_1\').val() != $(\'#clang-hack\').attr(\'article_id\')){
-        $(\'#rex_rexseo_redirects_Redirect_to_clang\').val($(\'#clang-hack\').attr(\'clang\'));
+      if($('#LINK_1').val() != $('#clang-hack').attr('article_id')){
+        $('#rex_rexseo_redirects_Redirect_to_clang').val($('#clang-hack').attr('clang'));
       }
     });
 
+    // UNIX TIMESTRING TO HUMAN DATE
     $("span.rex-form-read.unix-date").each(function() {
       d = new Date($(this).html() * 1000);
       $(this).html(d.getDate()+"."+(d.getMonth()+1)+"."+d.getFullYear()+" - "+d.getHours()+":"+d.getMinutes()+"h");
     });
 
+    // HIDE ACTUAL EXIRE DATE INPUT
     $("#rex_rexseo_redirects_Infos_expiredate").css("display","none");
+
+    // CONVERT UNIX DATE FROM HIDDEN INPUT TO HUMAN DATE FOR DATEPICKER
     v = $("#rex_rexseo_redirects_Infos_expiredate").val();
     d = new Date(v * 1000);
-    $(".unix-date-picker").append(\'<input type="text" style="width:100px" id="formated-date" value="\'+d.getDate()+"."+(d.getMonth()+1)+"."+d.getFullYear()+\'" /> (D.M.YYYY)\');
+    $(".unix-date-picker").append('<input type="text" style="width:100px" id="formated-date" value="'+d.getDate()+"."+(d.getMonth()+1)+"."+d.getFullYear()+'" /> (D.M.YYYY)');
 
   }); //jQuery(document).ready(function()
 
 
-  $(\'.open-clang-linkmap\').click(function(){
-    $(\'#clang-hack\').attr(\'clang\',$(this).attr(\'clang\'));
-    });
+  // SWITCH CSS STYLE FOR CHOSEN LANG IN WIDGET
+  $('.open-clang-linkmap').click(function(){
+    $('#clang-hack').attr('clang',$(this).attr('clang'));
+  });
 
 
-  $(\'input#formated-date\').change(function(){
+  // UPDATE HIDDEN INPUT ON USER CHANGE OF EXPIRE DATE
+  $('input#formated-date').change(function(){
     u = $(this).val().split(".");
     if(u[0]<10) u[0]="0"+u[0];
     if(u[1]<10) u[1]="0"+u[1];
     d = new Date(u[2],u[1]-1,u[0]);
     $("#rex_rexseo_redirects_Infos_expiredate").val(d.getTime()/1000);
-    });
+  });
 
+  // VALIDATE NOT EMPTY ON SAVE
   $("#rex_rexseo_redirects_Redirect_save").click(function(){
     if($("#rex_rexseo_redirects_Redirect_from_url").val()==""){
       alert("Alte URL definieren!");
@@ -345,6 +355,7 @@ jQuery(function($) {
     }
   });
 
+  // VALIDATE NOT EMPTY ON UPDATE
   $("#rex_rexseo_redirects_Redirect_apply").click(function(){
     if($("#rex_rexseo_redirects_Redirect_from_url").val()==""){
       alert("Alte URL definieren!");
@@ -359,6 +370,3 @@ jQuery(function($) {
 }); // jQuery(function($)
 //-->
 </script>
-';
-}
-?>
