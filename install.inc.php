@@ -21,7 +21,7 @@
 $myself            = 'rexseo';
 $myroot            = $REX['INCLUDE_PATH'].'/addons/'.$myself;
 
-$minimum_REX       = '4.2.0';
+$minimum_REX       = '4.3.0';
 $minimum_PHP       = 5;
 $required_addons   = array('textile','metainfo','cronjob');
 $disable_addons    = array('url_rewrite');
@@ -88,9 +88,9 @@ if(count($error)==0)
       a62_add_field( 'Sitemap Priority',            'art_rexseo_priority',      105,    '',          3,     '',       ':auto|1.00:1.00|0.80:0.80|0.64:0.64|0.51:0.51|0.33:0.33|0.00:0.00',                                    '',               '');
       a62_add_field( 'Sitemap Changefreq',          'art_rexseo_changefreq',    105,    '',          3,     '',       ':auto|never:never|yearly:yearly|monthly:monthly|weekly:weekly|daily:daily|hourly:hourly|always:always','',               '');
       a62_add_field( 'Sitemap Output',              'art_rexseo_sitemap_out',   106,    '',          3,     '',       ':auto|show:show|hide:hide',                                                                            '',               '');
-  
-  
-  
+
+
+
   // CHECK ROOT .HTACCESS FILE FOR CRITICAL SETTINGS
   //////////////////////////////////////////////////////////////////////////////
   $autoinstall  = true;
@@ -98,7 +98,7 @@ if(count($error)==0)
   {
     $matches  = array();
     $htaccess = rex_get_file_contents($REX['FRONTEND_PATH'].'/.htaccess');
-  
+
     foreach($htaccess_search as $needle)
     {
       if(strpos($htaccess,$needle)!==false)
@@ -107,7 +107,7 @@ if(count($error)==0)
         $matches[] = $needle;
       }
     }
-  
+
     if(count($matches)>0)
     {
       $msg = 'RexSEO: Die original .htaccess Datei im Root Ordner enth&auml;lt potentiell kritische settings f&uuml;r den Serverbetrieb:<br>';
@@ -119,8 +119,8 @@ if(count($error)==0)
       echo rex_warning($msg);
     }
   }
-  
-  
+
+
   // INSTALL/COPY .HTACCESS FILES
   //////////////////////////////////////////////////////////////////////////////
   if($autoinstall)
