@@ -243,7 +243,7 @@ elseif($func == 'edit' || $func == 'add')
 
   $expire = ($func == 'edit') ? null : time() + ($REX['ADDON']['rexseo']['settings']['default_redirect_expire']*24*60*60);
 
-  $field = &$form->addTextField('expiredate',$expire,array('class'=>'rex-form-text unix-date-picker'));
+  $field = &$form->addTextField('expiredate',$expire,array('class'=>'rex-form-text unix-date-picker','id'=>'rex_rexseo_redirects_Infos_expiredate'));
   $field->setLabel('Verfallsdatum');
 
   if($func == 'edit')
