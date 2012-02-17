@@ -101,7 +101,7 @@ $db->setQuery($check);
 if($db->getRows()==0)
 {
   $install = 'INSERT INTO `'.$REX['TABLE_PREFIX'].'630_cronjobs` (`id`, `name`, `type`, `parameters`, `interval`, `nexttime`, `environment`, `status`, `createdate`, `createuser`, `updatedate`, `updateuser`) VALUES
-  (\'\', \'RexSEO Redirect Expire\', \'rex_cronjob_phpcode\', \'a:1:{s:24:"rex_cronjob_phpcode_code";s:35:"rexseo_htaccess_update_redirects();";}\', \'|1|d|\', 0, \'|0|1|\', 1, CURDATE(), \'rexseo\', CURDATE(), \'rexseo\');';
+  (\'\', \'RexSEO Redirect Expire\', \'rex_cronjob_phpcode\', \'a:1:{s:24:"rex_cronjob_phpcode_code";s:80:"if (OOAddon::isAvailable(\'\'rexseo\'\'))\r\n{\r\n  rexseo_htaccess_update_redirects();\r\n}";}\', \'|1|d|\', 0, \'|0|1|\', 1, CURDATE(), \'rexseo\', CURDATE(), \'rexseo\');';
   $db->setQuery($install);
 }
 
