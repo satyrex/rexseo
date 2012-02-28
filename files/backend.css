@@ -18,7 +18,7 @@
 
 /* ADDON HEADLINE */
 #rex-title .rex-title-row h1 {
-  background:url('index.php?rexseo_func=rexseo_logo.png') no-repeat 2px 2px;
+  background:url('rexseo_logo.png') no-repeat 2px 2px;
   text-indent:-9999px;
   }
 span.addonversion {
@@ -34,7 +34,7 @@ a.jsopenwin,
 a.blank,
 span.jsopenwin {
   padding-right:16px;
-  background:url('index.php?rexseo_func=jsopenwin.gif') no-repeat 100% 0 ;
+  background:url('jsopenwin.gif') no-repeat 100% 0 ;
   }
 
 /* ADDON CONTENT */
@@ -102,7 +102,7 @@ span.jsopenwin {
 .rexseo pre {
   overflow:auto;
   border:1px solid #CBCBCB;
-  background:#DFE9E9 /*url("../files/addons/be_style/plugins/agk_skin/website.gif") repeat-x 0 -100px*/;
+  background:#DFE9E9;
   margin:2px 4px 8px 0;
   padding:8px;
   line-height:12px;
@@ -165,7 +165,7 @@ span.jsopenwin {
 .rexseo a.rex-form-submit:hover {
   color:black;
   text-decoration:none !important;
-  background:url("../files/addons/be_style/plugins/agk_skin/button.gif") repeat-x;
+  background:url('button.gif') repeat-x;
   padding:2px 6px;
   -moz-outline-radius:4px 4px 4px 4px;
   border:0 none;
@@ -245,7 +245,7 @@ table#rexseo-redirect-list span.redirect-btn {
   width:70px;
   line-height:16px;
   text-align:center;
-  background:#F0F0F0 url(../files/addons/be_style/plugins/agk_skin/button.gif) 0 -3px repeat-x;
+  background:#F0F0F0 url('button.gif') 0 -3px repeat-x;
   -moz-outline-radius: 4px 4px 4px 4px;
   border: 0 none;
   outline: 1px solid #CBCBCB;
@@ -276,7 +276,7 @@ table#rexseo-redirect-list span.redirect-btn.inactive {
 
 /*MULTI-CLANG LINKMAP HACK*/
 div.rex-widget p.rex-widget-icons a.open-clang-linkmap {
-  background-image: url("../files/addons/be_style/plugins/agk_skin/generic.gif") !important;
+  background-image: url('generic.gif') !important;
   padding: 3px 0 0 !important;
   text-align: center !important;
   font-weight:bold;

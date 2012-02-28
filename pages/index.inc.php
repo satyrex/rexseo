@@ -37,10 +37,10 @@ if ($REX['REDAXO'])
   {
     $params['subject'] .= 
       PHP_EOL.'<!-- REXSEO -->'.
-      PHP_EOL.'<link rel="stylesheet" type="text/css" href="index.php?rexseo_func=backend.css" media="screen, projection, print" />'.
-      PHP_EOL.'<script type="text/javascript" src="index.php?rexseo_func=jquery.highlight-3.yui.js"></script>'.
-      PHP_EOL.'<script type="text/javascript" src="index.php?rexseo_func=jquery.autogrow-textarea.js"></script>'.
-      PHP_EOL.'<script type="text/javascript" src="index.php?rexseo_func=jquery.scrollTo-1.4.2-min.js"></script>'.
+      PHP_EOL.'  <link rel="stylesheet" type="text/css" href="../files/addons/rexseo/backend.css" media="screen, projection, print" />'.
+      PHP_EOL.'  <script type="text/javascript" src="../files/addons/rexseo/jquery.highlight-3.yui.js"></script>'.
+      PHP_EOL.'  <script type="text/javascript" src="../files/addons/rexseo/jquery.autogrow-textarea.js"></script>'.
+      PHP_EOL.'  <script type="text/javascript" src="../files/addons/rexseo/jquery.scrollTo-1.4.2-min.js"></script>'.
       PHP_EOL.'<!-- /REXSEO -->'.PHP_EOL;
 
     return $params['subject'];

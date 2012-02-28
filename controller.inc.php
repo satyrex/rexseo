@@ -18,12 +18,13 @@
 
 global $REX;
 
-if (rex_request('rexseo_func')!='') {
+if (rex_request('rexseo_func')!='')
+{
   $path = $REX['INCLUDE_PATH'].'/addons/rexseo';
 
-  switch (rex_request('rexseo_func')) {
+  switch (rex_request('rexseo_func'))
+  {
     case 'googlesitemap':
-
       require_once $REX['INCLUDE_PATH'].'/addons/rexseo/classes/class.rexseo_sitemap.inc.php';
       $map = new rexseo_sitemap;
 
@@ -40,7 +41,8 @@ if (rex_request('rexseo_func')!='') {
       die();
     break;
 
-    case 'robots':
+
+  case 'robots':
       require_once $REX['INCLUDE_PATH'].'/addons/rexseo/classes/class.rexseo_robots.inc.php';
 
       $robots = new rexseo_robots;
@@ -49,41 +51,6 @@ if (rex_request('rexseo_func')!='') {
       $robots->addSitemapLink();
       $robots->send();
 
-      die();
-    break;
-
-    case 'backend.css':
-      rex_send_file($path.'/files/backend.css','text/css');
-      die();
-    break;
-
-    case 'jsopenwin.gif':
-      rex_send_file($path.'/files/jsopenwin.gif','image/gif');
-      die();
-    break;
-
-    case 'jquery.highlight-3.yui.js':
-      rex_send_file($path.'/files/jquery.highlight-3.yui.js','text/javascript');
-      die();
-    break;
-
-    case 'jquery.autogrow-textarea.js':
-      rex_send_file($path.'/files/jquery.autogrow-textarea.js','text/javascript');
-      die();
-    break;
-
-    case 'jquery.scrollTo-1.4.2-min.js':
-      rex_send_file($path.'/files/jquery.scrollTo-1.4.2-min.js','text/javascript');
-      die();
-    break;
-
-    case 'rexseo_logo.png':
-      rex_send_file($path.'/files/rexseo_logo.png','image/png');
-      die();
-    break;
-
-    case 'rex_agk_delete_on.gif':
-      rex_send_file($path.'/files/rex_agk_delete_on.gif','image/gif');
       die();
     break;
 
