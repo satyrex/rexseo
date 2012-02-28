@@ -508,8 +508,8 @@ Pfad: "'.$ht_path.'"');
   {
     if(preg_match("@(### REXSEO REDIRECTS BLOCK.*### /REXSEO REDIRECTS BLOCK)@s",$ht_content)!=1)
       echo rex_warning('ACHTUNG: redirects konnten nicht geschrieben werden!<br />
-Bitte die .htaccess auf <a>korrektes redirects delimiter Paar</a> überprüfen.<br />
-(Siehe original RexSEO htaccess: ../addons/rexseo/install/files/.htaccess)');
+Bitte die .htaccess auf korrektes redirects delimiter Paar überprüfen.<br />
+                       (Siehe original RexSEO htaccess: <em style="color:black;">./addons/rexseo/install/files/.htaccess</em> )');
 
     $new_ht = preg_replace("@(### REXSEO REDIRECTS BLOCK.*### /REXSEO REDIRECTS BLOCK)@s", $new_redirects, $ht_content);
     return rex_put_file_contents($ht_path, $new_ht);
