@@ -45,7 +45,8 @@ $CAST = array (
       'hide_langslug'              => 'int',
       'compress_pathlist'          => 'int',
       'urlencode'                  => 'int',
-      'default_redirect_expire'    => 'int'
+      'default_redirect_expire'    => 'int',
+      'auto_redirects'             => 'int'
       );
 
 

@@ -98,7 +98,7 @@ $REX["ADDON"]["rexseo"]["settings"] = array (
   'urlencode' => 0,
   'allow_articleid' => 0,
   'levenshtein' => 0,
-  'auto_redirects' => '0',
+  'auto_redirects' => 2,
   'default_redirect_expire' => 60,
   'robots' => 'User-agent: *
 Disallow:',
