@@ -16,7 +16,7 @@
  * @version svn:$Id$
  */
 
-// ADDON PARAMS
+//  ADDON PARAMS
 ////////////////////////////////////////////////////////////////////////////////
 $myself = 'rexseo';
 $myroot = $REX['INCLUDE_PATH'].'/addons/'.$myself;
