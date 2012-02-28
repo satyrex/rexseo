@@ -523,7 +523,7 @@ if(count($db->getDBArray($qry))>0)
                   </td>
                   <td>
                     <a href="index.php?page=rexseo&func=delete_redirect&id='.$r['id'].'">
-                      <img style="border:0;margin:-3px 0 0 0;" src="index.php?rexseo_func=rex_agk_delete_on.gif">
+                      <img style="border:0;margin:-3px 0 0 0;" src="../files/addons/rexseo/rex_agk_delete_on.gif">
                     </a>
                   </td>
                 </tr>';
