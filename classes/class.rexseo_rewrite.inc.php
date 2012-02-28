@@ -49,7 +49,7 @@ class RexseoRewrite
 
     if($trace!=false)
     {
-      $logfile = $REX['INCLUDE_PATH'].'/addons/rexseo/pages/rexseo.log';
+      $logfile = $REX['INCLUDE_PATH'].'/addons/rexseo/rexseo.log';
       $log_content = file_exists($logfile) ? rex_get_file_contents($logfile) : '';
       $log_content = $log_content!='empty..' ? $log_content : '';
   
