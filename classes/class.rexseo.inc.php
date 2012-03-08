@@ -20,18 +20,23 @@
 class rexseo {
 
 
-  function title($artID=null)
+  function title($article_id = null,$title_schema = null)
   {
     global $REX;
-    $artID=intval($artID);
-    if (!$artID)
+
+    $article_id = !$article_id ? $REX['ARTICLE_ID'] : (int) $article_id;
+    $title_schema = !$title_schema ? $REX['ADDON']['rexseo']['settings']['title_schema'] : $title_schema;
+    $curart = OOArticle::getArticleById($article_id);
+    $art_rexseo_title = $curart->getValue('art_rexseo_title');
+
+    // CUSTOM REXSEO TITLE OVERRIDES ANY OTHER SCHEME
+    if($art_rexseo_title!='')
     {
-      $artID=$REX['ARTICLE_ID'];
+      return $art_rexseo_title;
     }
 
-    $curart = OOArticle::getArticleById($artID);
+    // GET PARRENT CATS
     $parents = $curart->getParentTree();
-
     if ($curart->getValue('name') != $curart->getValue('catname'))
     {
       array_push($parents, $curart);
@@ -59,23 +64,19 @@ class rexseo {
         $B .= ' - '.$parent->getValue('catname');
       }
     }
-    $B = trim($B);
-    $B = trim($B,"-");
-    $B = trim($B);
+    $B = trim($B," -");
 
-    // SIMPLE TITLE
+    // CATEGORY TITLE
+    $C = $curart->getValue('catname');
+
+    // ARTICLE TITLE
     $N = $curart->getValue('name');
 
     // SERVERNAME
     $S = $REX['SERVERNAME']!='' ? $REX['SERVERNAME'] : $_SERVER['HTTP_HOST'] ;
 
-    // OVERRIDE: REXSEO TITLE
-    if($curart->getValue('art_rexseo_title')!='')
-    {
-      $B = $N = $curart->getValue('art_rexseo_title');
-    }
-
-    $title = str_replace(array('%B','%N','%S'),array($B,$N,$S),$REX['ADDON']['rexseo']['settings']['title_schema']);
+    // APPLY SCHEMA
+    $title = str_replace(array('%B','%N','%S','%C'),array($B,$N,$S,$C),$title_schema);
 
     $title = rexseo::htmlentities($title);
 
