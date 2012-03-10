@@ -13,30 +13,25 @@
  *
  * @package redaxo4.2.x/4.3.x
  * @version 1.4
- * @version svn:$Id$
+ * @version svn:$Id: class.rexseo.inc.php 224 2011-12-29 01:21:03Z jeandeluxe $
  */
 
 
 class rexseo {
 
 
-  function title($article_id = null,$title_schema = null)
+  function title($artID=null)
   {
     global $REX;
-
-    $article_id = !$article_id ? $REX['ARTICLE_ID'] : (int) $article_id;
-    $title_schema = !$title_schema ? $REX['ADDON']['rexseo']['settings']['title_schema'] : $title_schema;
-    $curart = OOArticle::getArticleById($article_id);
-    $art_rexseo_title = $curart->getValue('art_rexseo_title');
-
-    // CUSTOM REXSEO TITLE OVERRIDES ANY OTHER SCHEME
-    if($art_rexseo_title!='')
+    $artID=intval($artID);
+    if (!$artID)
     {
-      return $art_rexseo_title;
+      $artID=$REX['ARTICLE_ID'];
     }
 
-    // GET PARRENT CATS
+    $curart = OOArticle::getArticleById($artID);
     $parents = $curart->getParentTree();
+
     if ($curart->getValue('name') != $curart->getValue('catname'))
     {
       array_push($parents, $curart);
@@ -64,19 +59,23 @@ class rexseo {
         $B .= ' - '.$parent->getValue('catname');
       }
     }
-    $B = trim($B," -");
+    $B = trim($B);
+    $B = trim($B,"-");
+    $B = trim($B);
 
-    // CATEGORY TITLE
-    $C = $curart->getValue('catname');
-
-    // ARTICLE TITLE
+    // SIMPLE TITLE
     $N = $curart->getValue('name');
 
     // SERVERNAME
     $S = $REX['SERVERNAME']!='' ? $REX['SERVERNAME'] : $_SERVER['HTTP_HOST'] ;
 
-    // APPLY SCHEMA
-    $title = str_replace(array('%B','%N','%S','%C'),array($B,$N,$S,$C),$title_schema);
+    // OVERRIDE: REXSEO TITLE
+    if($curart->getValue('art_rexseo_title')!='')
+    {
+      $B = $N = $curart->getValue('art_rexseo_title');
+    }
+
+    $title = str_replace(array('%B','%N','%S'),array($B,$N,$S),$REX['ADDON']['rexseo']['settings']['title_schema']);
 
     $title = rexseo::htmlentities($title);
 
