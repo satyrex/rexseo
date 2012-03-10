@@ -19,7 +19,7 @@
 global $REX;
 
 $myself = 'rexseo';
+$myroot = $REX['INCLUDE_PATH'].'/addons/'.$myself;
 
-$rc = new redmine_connect($REX['ADDON'][$myself]['redmine_url'],$REX['ADDON'][$myself]['redmine_key']);
-echo $rc->getList(rex_request('chapter', 'string'));
-?>
+$gc = new github_connect('gn2netwerk','rexseo');
+echo $gc->getList(rex_request('chapter', 'string'));
