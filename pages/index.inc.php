@@ -35,7 +35,7 @@ if ($REX['REDAXO'])
 
   function rexseo_header_add($params)
   {
-    $params['subject'] .= 
+    $params['subject'] .=
       PHP_EOL.'<!-- REXSEO -->'.
       PHP_EOL.'  <link rel="stylesheet" type="text/css" href="../files/addons/rexseo/backend.css" media="screen, projection, print" />'.
       PHP_EOL.'  <script type="text/javascript" src="../files/addons/rexseo/jquery.highlight-3.yui.js"></script>'.
@@ -49,7 +49,7 @@ if ($REX['REDAXO'])
 
 // INCLUDES
 ////////////////////////////////////////////////////////////////////////////////
-require_once $myroot.'/classes/class.redmine_connect.inc.php';
+require_once $myroot.'/classes/class.github_connect.inc.php';
 require_once $myroot.'/functions/function.rexseo_helpers.inc.php';
 require_once $myroot.'/classes/class.rexseo_select.inc.php';
 
@@ -63,11 +63,11 @@ $subpage = $subpage=='' ? 'settings' : $subpage; /* 4.2.1 fix: top.php resets $s
 rex_title('RexSEO <span class="addonversion">'.$REX['ADDON']['version'][$myself].'</span>', $REX['ADDON'][$myself]['SUBPAGES']);
 
 // NOTIFY DOWNLOADABLE UPDATE
-$rc = new redmine_connect($REX['ADDON'][$myself]['redmine_url'],$REX['ADDON'][$myself]['redmine_key']);
-$check = $rc->getLatest('download',$REX['ADDON']['version'][$myself],'link');
-if($check!='')
+$gc = new github_connect('gn2netwerk','rexseo');
+$new_version = $gc->getLatestVersion($REX['ADDON']['version'][$myself],'link');
+if($new_version!='')
 {
-  echo rex_info('Eine neue Version ist als Download verf&uuml;gbar: '.$check);
+  echo rex_info('Eine neue Version ist als Download verf&uuml;gbar: '.$new_version);
 }
 
 // INCLUDE SUBPAGE

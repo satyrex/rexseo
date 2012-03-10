@@ -100,13 +100,13 @@ if($REX['ADDON'][$myself]['settings']['alert_setup'] == 1)
 if($REX['ADDON'][$myself]['settings']['first_run'] == 1 && file_exists($backup))
 {
   require_once $backup;
-  echo rex_info('Daten wurde aus Backup ins Formular &uuml;bernommen - bitte Einstellungen speichern!');
+  echo rex_info('Daten wurden aus Backup ins Formular &uuml;bernommen - bitte Einstellungen speichern!');
 
   // IMPORT REDIRECTS FROM BACKUP CONFIG TO DB
   $db = new rex_sql;
   $db->setQuery('SELECT * FROM `'.$table.'`;');
 
-  if(isset($REX['ADDON']['rexseo']['settings']['301s']) && 
+  if(isset($REX['ADDON']['rexseo']['settings']['301s']) &&
      count($REX['ADDON']['rexseo']['settings']['301s'])>0 &&
      $db->getRows()==0)
   {
@@ -505,7 +505,7 @@ if(count($db->getDBArray($qry))>0)
       default:
         $status = '<a href="index.php?page=rexseo&func=toggle_redirect&id='.$r['id'].'"><span class="redirect-btn">inaktiv</span></a>';
     }
-  
+
     echo '
                 <tr>
                   <td>
