@@ -107,22 +107,22 @@ class rexseo_meta {
     }
     $B = trim($B," -");
 
-    // CATEGORY TITLE
+    // CATEGORY NAME
     $C = $curart->getValue('catname');
 
-    // ARTICLE TITLE
+    // ARTICLE NAME
     $N = $curart->getValue('name');
 
-    // SERVERNAME
+    // REX SERVERNAME (HTTP_HOST AS FALLBACK)
     $S = $this->servername!='' ? $this->servername : $this->http_host;
 
-    // CUSTOM REXSEO TITLE OVERRIDES ANY OTHER TITLE
+    // CUSTOM REXSEO TITLE (OVERRIDES ANY OTHER TITLE/SCHEME)
     if($art_rexseo_title!='')
     {
       $title_schema = $art_rexseo_title;
     }
 
-    // APPLY SCHEMA
+    // REPLACE PLACEHOLDERS
     $title = str_replace(array('%B','%N','%S','%C'),array($B,$N,$S,$C),$title_schema);
 
     return self::encode_string($title);
