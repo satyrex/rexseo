@@ -381,7 +381,7 @@ echo '
             <p class="rex-form-col-a rex-form-text">
               <label for="title_schema" class="helptopic">Title Elemente:</label>
               <input id="title_schema" class="rex-form-text" type="text" name="title_schema" value="'.stripslashes($REX['ADDON'][$myself]['settings']['title_schema']).'" /><br />
-              <em style="color:gray;font-size:10px;">%B = breadcrumb | %N = article name | %S = server/host</em>
+              <em style="color:gray;font-size:10px;">%B = breadcrumb | %N = article name | %C = category name | %S = server/host</em>
             </p>
           </div><!-- /rex-form-row -->
 
