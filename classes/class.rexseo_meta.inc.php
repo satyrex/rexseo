@@ -67,7 +67,19 @@ class rexseo_meta {
   /**
    * returns meta title of article
    *
-   * @param string $title_schema optional, else addon default is used (note: art_rexseo_title overrides all)
+   * @param string $title_schema optional
+   *
+   * TITLE SCHEME PRIORITIES:
+   * 1. art_rexseo_title
+   * 2. scheme from method param
+   * 3. default scheme from addon
+   *
+   * Title Scheme Placeholders:
+   * %B -> breadcrumb
+   * %N -> article name
+   * %C -> article category name
+   * %S -> REX SERVERNAME (http_host as fallback)
+   *
    * @return string meta title
    */
   public function get_title($title_schema = null)
