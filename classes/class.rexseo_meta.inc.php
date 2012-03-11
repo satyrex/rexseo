@@ -20,6 +20,7 @@
 class rexseo_meta {
 
   private $article_id;
+  private $current_article;
   private $clang;
   private $start_article_id;
   private $def_keys;
@@ -34,10 +35,11 @@ class rexseo_meta {
   private $rex_is_iso;
   private $encoder;
 
-  function rexseo_meta()
+  public function rexseo_meta($article_id=null)
   {
     global $REX;
-    $this->article_id       = $REX['ARTICLE_ID'];
+    $this->article_id       = !$article_id ? $REX['ARTICLE_ID'] : (int) $article_id;
+    $this->current_article  = $this->article_id == $REX['ARTICLE_ID'] ? true : false;
     $this->clang            = $REX['CUR_CLANG'];
     $this->start_article_id = $REX['START_ARTICLE_ID'];
     $this->title_schema     = $REX['ADDON']['rexseo']['settings']['title_schema'];
@@ -54,11 +56,10 @@ class rexseo_meta {
   }
 
 
-  function get_title($article_id = null,$title_schema = null)
+  public function get_title($title_schema = null)
   {
-    $article_id   = !$article_id   ? $this->article_id   : (int) $article_id;
     $title_schema = !$title_schema ? $this->title_schema : $title_schema;
-    $curart = OOArticle::getArticleById($article_id);
+    $curart = OOArticle::getArticleById($this->article_id);
     $art_rexseo_title = $curart->getValue('art_rexseo_title');
 
     // GET PARRENT CATS
@@ -114,22 +115,18 @@ class rexseo_meta {
   }
 
 
-  function get_keywords($article_id=null)
+  public function get_keywords()
   {
-    $article_id = !$article_id ? $this->article_id : (int) $article_id;
-
-    $keys = self::getMetaField($article_id,"art_keywords",$this->def_keys[$this->clang]);
+    $keys = self::getMetaField($this->article_id,"art_keywords",$this->def_keys[$this->clang]);
     $keys = self::sanitize_keywords($keys);
-    $keys = self::encode_string($keys);
-    return $keys;
+
+    return self::encode_string($keys);
   }
 
 
-  function get_description($article_id=null)
+  public function get_description()
   {
-    $article_id = !$article_id ? $this->article_id : (int) $article_id;
-
-    $desc = self::getMetaField($article_id,"art_description",$this->def_desc[$this->clang]);
+    $desc = self::getMetaField($this->article_id,"art_description",$this->def_desc[$this->clang]);
     $desc = str_replace(array("\r","\n"),' ',$desc);
     $desc = trim($desc);
 
@@ -137,24 +134,22 @@ class rexseo_meta {
   }
 
 
-  function get_canonical($article_id=null)
+  public function get_canonical()
   {
-    if(isset($_SERVER['REQUEST_URI']) && $article_id==null)
+    if(isset($_SERVER['REQUEST_URI']) && $this->current_article==true)
     {
       $canonical = preg_replace('/[?|'.$this->params_starter.'].*/','',$_SERVER['REQUEST_URI']);
-      $article_id = $this->article_id;
     }
     else
     {
-      $article_id = !$article_id ? $this->article_id : (int) $article_id;
       $canonical = rex_getURL($article_id,$this->clang);
     }
-    $canonical = self::getMetaField($article_id,'art_rexseo_canonicalurl',$canonical);
+    $canonical = self::getMetaField($this->article_id,'art_rexseo_canonicalurl',$canonical);
 
     return $this->protocol.$this->http_host.'/'.ltrim($canonical,'/');
   }
 
-  function get_base()
+  public function get_base()
   {
     return $this->base_url;
   }
@@ -211,7 +206,7 @@ class rexseo_meta {
   }
 
 
-  function getMetaField($article_id,$metafield="file",$defval="",$loop="")
+  private function getMetaField($article_id,$metafield="file",$defval="",$loop="")
   {
     $meta = OOArticle::getArticleById($article_id);
     $value = '';
@@ -240,4 +235,41 @@ class rexseo_meta {
   }
 
 }
-?>
+
+// COMPAT CLASS REXSEO
+////////////////////////////////////////////////////////////////////////////////
+class rexseo
+{
+  static public function title($article_id=null)
+  {
+    $meta = new rexseo_meta($article_id);
+    $meta->set_encode('htmlentities');
+    return $meta->get_title();
+  }
+
+  static public function keywords($article_id=null)
+  {
+    $meta = new rexseo_meta($article_id);
+    $meta->set_encode('htmlentities');
+    return $meta->get_keywords();
+  }
+
+  static public function description($article_id=null)
+  {
+    $meta = new rexseo_meta($article_id);
+    $meta->set_encode('htmlentities');
+    return $meta->get_description();
+  }
+
+  static public function canonical($article_id=null)
+  {
+    $meta = new rexseo_meta($article_id);
+    return $meta->get_canonical();
+  }
+
+  static public function base()
+  {
+    $meta = new rexseo_meta;
+    return $meta->get_base();
+  }
+}
