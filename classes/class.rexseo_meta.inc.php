@@ -35,12 +35,20 @@ class rexseo_meta {
   private $rex_is_iso;
   private $encoder;
 
-  public function rexseo_meta($article_id=null)
+
+  /**
+   * constructor
+   *
+   * @param int $article_id optional, else current article used
+   * @param int $clang      optional, else current clang used
+   * @return void
+   */
+  public function rexseo_meta($article_id=null,$clang=null)
   {
     global $REX;
     $this->article_id       = !$article_id ? $REX['ARTICLE_ID'] : (int) $article_id;
-    $this->current_article  = $this->article_id == $REX['ARTICLE_ID'] ? true : false;
-    $this->clang            = $REX['CUR_CLANG'];
+    $this->clang            = !$clang      ? $REX['CUR_CLANG']  : (int) $clang;
+    $this->current_article  = $this->article_id == $REX['ARTICLE_ID'] && $this->clang == $REX['CUR_CLANG'] ? true : false;
     $this->start_article_id = $REX['START_ARTICLE_ID'];
     $this->title_schema     = $REX['ADDON']['rexseo']['settings']['title_schema'];
     $this->install_subdir   = $REX['ADDON']['rexseo']['settings']['install_subdir'];
@@ -56,6 +64,12 @@ class rexseo_meta {
   }
 
 
+  /**
+   * returns meta title of article
+   *
+   * @param string $title_schema optional, else addon default is used (note: art_rexseo_title overrides all)
+   * @return string meta title
+   */
   public function get_title($title_schema = null)
   {
     $title_schema = !$title_schema ? $this->title_schema : $title_schema;
@@ -115,6 +129,11 @@ class rexseo_meta {
   }
 
 
+  /**
+   * returns meta keywords of article
+   *
+   * @return string meta keywords
+   */
   public function get_keywords()
   {
     $keys = self::getMetaField($this->article_id,"art_keywords",$this->def_keys[$this->clang]);
@@ -124,6 +143,11 @@ class rexseo_meta {
   }
 
 
+  /**
+   * returns meta description of article
+   *
+   * @return string meta description
+   */
   public function get_description()
   {
     $desc = self::getMetaField($this->article_id,"art_description",$this->def_desc[$this->clang]);
@@ -134,6 +158,11 @@ class rexseo_meta {
   }
 
 
+  /**
+   * returns meta canonical url of article
+   *
+   * @return string meta canonical url
+   */
   public function get_canonical()
   {
     if(isset($_SERVER['REQUEST_URI']) && $this->current_article==true)
@@ -149,18 +178,37 @@ class rexseo_meta {
     return $this->protocol.$this->http_host.'/'.ltrim($canonical,'/');
   }
 
+
+  /**
+   * returns meta base url of article
+   *
+   * @return string meta base url
+   */
   public function get_base()
   {
     return $this->base_url;
   }
 
 
+  /**
+   * returns connection protocol
+   *
+   * @return string protocol [https:// or http://]
+   */
   private function get_protocol()
   {
     return isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https://' : 'http://';
   }
 
 
+  /**
+   * encodes meta strings according to settings and class used:
+   * default for static rexseo methods: htmlentities
+   * default for rexseo_meta methods: htmlspecialchars
+   *
+   * @param string meta text
+   * @return string encoded text
+   */
   private function encode_string($str)
   {
     switch($this->encoder)
@@ -175,6 +223,11 @@ class rexseo_meta {
   }
 
 
+  /**
+   * sets encode type
+   *
+   * @param string encode type [htmlentities or htmlspecialchars]
+   */
   public function set_encode($type)
   {
     switch($type)
@@ -189,6 +242,12 @@ class rexseo_meta {
   }
 
 
+  /**
+   * replaces linebreaks, unnecessary whitespace, etc. in keywords
+   *
+   * @param string keywords
+   * @return string sanitized keywords
+   */
   private function sanitize_keywords($keys)
   {
     $keys = str_replace(array("\r","\n"),' ',$keys);
@@ -206,38 +265,46 @@ class rexseo_meta {
   }
 
 
-  private function getMetaField($article_id,$metafield="file",$defval="",$loop="")
+  /**
+   * returns values of article meta fields
+   *
+   * @param int $article_id sets article to get meta from
+   * @param int $metafield specifies which meta filed to return
+   * @param string $default default value returned if original value empty
+   * @param bool $get_parrent if set to TRUE & article's meta value empty: get value from parent article
+   * @return string meta field value
+   */
+  private function getMetaField($article_id,$metafield='file',$default='',$get_parrent=null)
   {
     $meta = OOArticle::getArticleById($article_id);
     $value = '';
 
-    if (($meta->getValue($metafield))!="")
-    {   $value=$meta->getValue($metafield);
+    if(($meta->getValue($metafield))!="")
+    {
+      $value=$meta->getValue($metafield);
     }
     else
-    {  if ($loop=="LOOP") {
+    {
+      if($get_parrent==true)
+      {
         $cat = OOCategory::getCategoryById($article_id);
-
         if ($cat->getParent())
-        {  $cat = $cat->getParent();
-
-          $value=self::getMetaField($cat->getValue('id'),$metafield,$defval,$loop);
+        {
+          $cat   = $cat->getParent();
+          $value = self::getMetaField($cat->getValue('id'),$metafield,$default,$get_parrent);
         }
       }
     }
 
-    if ($value == '')
-    {
-      $value = $defval;
-    }
-
-    return $value;
+    return ($value == '') ? $default : $value;
   }
 
 }
 
-// COMPAT CLASS REXSEO
-////////////////////////////////////////////////////////////////////////////////
+
+/**
+ * COMPAT CLASS REXSEO: re-implements deprecated static methods
+ */
 class rexseo
 {
   static public function title($article_id=null)
