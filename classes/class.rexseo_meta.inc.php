@@ -20,7 +20,7 @@
 class rexseo_meta {
 
   private $article_id;
-  private $current_article;
+  private $is_cur_article;
   private $clang;
   private $start_article_id;
   private $def_keys;
@@ -48,7 +48,7 @@ class rexseo_meta {
     global $REX;
     $this->article_id       = !$article_id ? $REX['ARTICLE_ID'] : (int) $article_id;
     $this->clang            = !$clang      ? $REX['CUR_CLANG']  : (int) $clang;
-    $this->current_article  = $this->article_id == $REX['ARTICLE_ID'] && $this->clang == $REX['CUR_CLANG'] ? true : false;
+    $this->is_cur_article   = $this->article_id == $REX['ARTICLE_ID'] && $this->clang == $REX['CUR_CLANG'] ? true : false;
     $this->start_article_id = $REX['START_ARTICLE_ID'];
     $this->title_schema     = $REX['ADDON']['rexseo']['settings']['title_schema'];
     $this->install_subdir   = $REX['ADDON']['rexseo']['settings']['install_subdir'];
@@ -177,7 +177,7 @@ class rexseo_meta {
    */
   public function get_canonical()
   {
-    if(isset($_SERVER['REQUEST_URI']) && $this->current_article==true)
+    if(isset($_SERVER['REQUEST_URI']) && $this->is_cur_article==true)
     {
       $canonical = preg_replace('/[?|'.$this->params_starter.'].*/','',$_SERVER['REQUEST_URI']);
     }
