@@ -52,11 +52,11 @@ class RexseoRewrite
       $logfile = $REX['INCLUDE_PATH'].'/addons/rexseo/rexseo.log';
       $log_content = file_exists($logfile) ? rex_get_file_contents($logfile) : '';
       $log_content = $log_content!='empty..' ? $log_content : '';
-  
+
       $new_entry = str_pad('### '.date("d.m.Y H:i").' ',80, "#").PHP_EOL.$err_txt.PHP_EOL;
       if(is_array($trace))
         $new_entry .= 'BACKTRACE:'.PHP_EOL.var_export($trace,true).PHP_EOL.PHP_EOL;
-  
+
       rex_put_file_contents($logfile,$new_entry .$log_content);
     }
   }
@@ -244,7 +244,9 @@ class RexseoRewrite
     }
 
     // INCLUDE SUBDIR BECAUSE rex_redirect() DOESN'T KNOW <base href="" />
-    return $subdir.$url;
+    // str_replace fixes a caching bug that appears while updating specific
+    // modules/slices in the redaxo backend
+    return str_replace('/redaxo/','/',$subdir.$url);
   }
 
 
@@ -487,7 +489,7 @@ function rexseo_generate_pathlist($params)
         $pathname = ltrim(trim($rexseo_url),'/'); // sanitize whitespaces & leading slash
         $pathname = urlencode($pathname);
         $pathname = str_replace('%2F','/',$pathname); // decode slahes..
-        
+
       }
       // NORMALE URL ERZEUGUNG
       else
@@ -544,7 +546,7 @@ function rexseo_generate_pathlist($params)
         $pathname = substr($pathname,0,strlen($pathname)-1).$REX['ADDON']['rexseo']['settings']['url_ending'];
 
         // STARTSEITEN URL FORMAT
-        if($db->getValue('id')    == $REX['START_ARTICLE_ID'] && 
+        if($db->getValue('id')    == $REX['START_ARTICLE_ID'] &&
            $db->getValue('clang') == $REX['ADDON']['rexseo']['settings']['homelang'] &&
            $REX['ADDON']['rexseo']['settings']['homeurl'] == 1)
         {
@@ -576,7 +578,7 @@ function rexseo_generate_pathlist($params)
   // EXTENSION POINT "REXSEO_PATHLIST_CREATED"
   $subject = array('REXSEO_IDS'=>$REXSEO_IDS,'REXSEO_URLS'=>$REXSEO_URLS);
   $subject = rex_register_extension_point('REXSEO_PATHLIST_CREATED',$subject);
-  
+
   // EXTENSION POINT "REXSEO_PATHLIST_FINAL" - READ ONLY
   rex_register_extension_point('REXSEO_PATHLIST_FINAL',$subject);
 
