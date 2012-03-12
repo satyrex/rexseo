@@ -25,23 +25,24 @@ $meta_beschreibung = $OOStartArticle->getValue("art_description");
 $meta_suchbegriffe = $OOStartArticle->getValue("art_keywords");
 
 if($this->getValue("art_description") != "")
-	$meta_beschreibung = $this->getValue("art_description");
-	
+  $meta_beschreibung = $this->getValue("art_description");
+
 if($this->getValue("art_keywords") != "")
-	$meta_suchbegriffe = $this->getValue("art_keywords");
+  $meta_suchbegriffe = $this->getValue("art_keywords");
 
 p. *ersetzen durch:*
 
 bc.. if(OOAddon::isAvailable('rexseo'))
 {
-  $meta_description   = rexseo::description();
-  $meta_keywords      = rexseo::keywords();
-  $meta_title         = rexseo::title();
-  $meta_canonical     = rexseo::canonical();
-  $meta_base          = rexseo::base();
-}                     
-else                  
-{                     
+  $meta = new rexseo_meta();
+  $meta_description   = $meta->get_description();
+  $meta_keywords      = $meta->get_keywords();
+  $meta_title         = $meta->get_title();
+  $meta_canonical     = $meta->get_canonical();
+  $meta_base          = $meta->get_base();
+}
+else
+{
   $OOStartArticle     = OOArticle::getArticleById($REX['START_ARTICLE_ID'], $REX['CUR_CLANG']);
   $meta_description   = $OOStartArticle->getValue("art_description");
   $meta_keywords      = $OOStartArticle->getValue("art_keywords");
