@@ -11,10 +11,11 @@ Für alle Artikel die keinen Eintrag unter *Metadaten/Sonstiges* > *Beschreibung
 ## *Keywords:*
 Für alle Artikel die keinen Eintrag unter *Metadaten/Sonstiges* > *Suchbegriffe* haben.
 * *Title Elemente:*
-Dieses Schema definiert die Elemente der normalen title Generierung, sofern kein expliziter rexseo title ("Metadaten/Sonstiges") für den Artikel definiert wurde. Folgende Platzhalter stehen zur Verfügung:
+Dieses Schema definiert die Elemente der normalen title Generierung, sofern kein expliziter rexseo title ("Metadaten/Sonstiges") für den Artikel definiert wurde (*Hinweis:* auch hier können die Platzhalter verwendet werden ). Folgende Platzhalter stehen zur Verfügung:
 ## @%B@ - Breadcrumb aus der Kategorie/Artikel-Hierarchie
-## @%N@ - Name des Artikels.
-## @%S@ - Servername bzw. HTTP_HOST als fallback
+## @%N@ - Name des Artikels
+## @%C@ - Name der Artikel-Kategorie
+## @%S@ - REX SERVERNAME bzw. HTTP_HOST als fallback
 * *URL Rewrite Optionen*
 ## *Schema:*
 *** *RexSEO:* Startartikel und allgemeine Artikel einer Kategorie werden unterschiedlich behandelt:
