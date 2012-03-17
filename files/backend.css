@@ -1,18 +1,16 @@
 /**
- * RexSEO Addon
+ * RexSEO - URLRewriter Addon
  *
- * @link http://gn2-code.de/projects/rexseo/
  * @link https://github.com/gn2netwerk/rexseo
  *
  * @author dh[at]gn2-netwerk[dot]de Dave Holloway
- * @author code[at]rexdev[dot]de jeandeluxe
+ * @author code[at]rexdev[dot]de jdlx
  *
  * Based on url_rewrite Addon by
  * @author markus.staab[at]redaxo[dot]de Markus Staab
  *
- * @package redaxo4.2.x/4.3.x
- * @version 1.4
- * @version svn:$Id$
+ * @package redaxo4.3.x
+ * @version 1.4.280
  */
 
 
@@ -180,10 +178,10 @@ span.jsopenwin {
   /*height:100px;*/
 }
 .rexseo_ticket {
-	margin:2px 0 2px 0;
+  margin:2px 0 2px 0;
 }
 .rexseo_ticket .rexseo_date {
-	margin-right:15px;
+  margin-right:15px;
 }
 
 a.help-icon {
@@ -271,7 +269,7 @@ table#rexseo-redirect-list span.redirect-btn.inactive {
   padding:0;
 }
 .rexseo ul.redmine-feed .redmine-date {
-	margin-right:15px;
+  margin-right:15px;
 }
 
 /*MULTI-CLANG LINKMAP HACK*/

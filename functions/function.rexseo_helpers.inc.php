@@ -1,19 +1,17 @@
 <?php
 /**
- * RexSEO Addon
+ * RexSEO - URLRewriter Addon
  *
- * @link http://gn2-code.de/projects/rexseo/
  * @link https://github.com/gn2netwerk/rexseo
  *
  * @author dh[at]gn2-netwerk[dot]de Dave Holloway
- * @author code[at]rexdev[dot]de jeandeluxe
+ * @author code[at]rexdev[dot]de jdlx
  *
  * Based on url_rewrite Addon by
  * @author markus.staab[at]redaxo[dot]de Markus Staab
  *
- * @package redaxo4.2.x/4.3.x
- * @version 1.4
- * @version svn:$Id$
+ * @package redaxo4.3.x
+ * @version 1.4.280
  */
 
 if (!function_exists('rexseo_recursive_copy'))
@@ -482,14 +480,14 @@ function rexseo_htaccess_update_redirects()
   }                                                                             #FB::log($redirects,'$redirects');
 
   $ht_path = $REX['HTDOCS_PATH'].'.htaccess';
-  
+
   if(!file_exists($ht_path))
     {
       echo rex_warning('FEHLER: .htaccess wurde nicht unter folgendem Pfad gefunden:<br />
 Pfad: "'.$ht_path.'"');
       return false;
     }
-  
+
   if(count($redirects)>0)
   {
     $new_redirects = '### REXSEO REDIRECTS BLOCK'.PHP_EOL;

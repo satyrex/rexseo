@@ -1,19 +1,17 @@
 <?php
 /**
- * RexSEO Addon
+ * RexSEO - URLRewriter Addon
  *
- * @link http://gn2-code.de/projects/rexseo/
  * @link https://github.com/gn2netwerk/rexseo
  *
  * @author dh[at]gn2-netwerk[dot]de Dave Holloway
- * @author code[at]rexdev[dot]de jeandeluxe
+ * @author code[at]rexdev[dot]de jdlx
  *
  * Based on url_rewrite Addon by
  * @author markus.staab[at]redaxo[dot]de Markus Staab
  *
- * @package redaxo4.2.x/4.3.x
- * @version 1.4
- * @version svn:$Id$
+ * @package redaxo4.3.x
+ * @version 1.4.280
  */
 
 class rexseo_sitemap
@@ -31,12 +29,12 @@ class rexseo_sitemap
   private function get_db_articles()
   {
     global $REX;
-  
+
     $db_articles = array();
     $db = new rex_sql;
     $qry = 'SELECT `id`,`clang`,`updatedate`,`path`,`art_rexseo_priority`,`art_rexseo_changefreq`
-            FROM `'.$REX['TABLE_PREFIX'].'article` 
-            WHERE `art_rexseo_sitemap_out`=\'show\' 
+            FROM `'.$REX['TABLE_PREFIX'].'article`
+            WHERE `art_rexseo_sitemap_out`=\'show\'
             OR    (`art_rexseo_sitemap_out`=\'\' AND `status`=1);';
     foreach($db->getDbArray($qry) as $art)
     {
@@ -46,7 +44,7 @@ class rexseo_sitemap
                                                        'priority'   => self::calc_article_priority($art['id'],$art['clang'],$art['path'],$art['art_rexseo_priority'])
                                                        );
     }
-  
+
     // EXTENSIONPOINT REXSEO_SITEMAP_ARRAY_CREATED
     $db_articles = rex_register_extension_point('REXSEO_SITEMAP_ARRAY_CREATED',$db_articles);
 
@@ -70,13 +68,13 @@ class rexseo_sitemap
   private function calc_article_priority($article_id,$clang,$path,$art_rexseo_priority='')
   {
     global $REX;
-    
+
     if($art_rexseo_priority!='')
       return $art_rexseo_priority;
-  
+
     if($article_id==$REX['START_ARTICLE_ID'] && $clang==$REX['START_CLANG_ID'])
       return 1.0;
-  
+
     return pow(0.8,count(explode('|',$path))-1);
   }
 
@@ -93,9 +91,9 @@ class rexseo_sitemap
   {
     if($art_rexseo_changefreq!='')
       return $art_rexseo_changefreq;
-  
+
     $age = time() - $updatedate;
-  
+
     switch($age)
     {
       case($age<604800):

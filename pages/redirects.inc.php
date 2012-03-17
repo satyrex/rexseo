@@ -1,19 +1,17 @@
 <?php
 /**
- * RexSEO Addon
+ * RexSEO - URLRewriter Addon
  *
- * @link http://gn2-code.de/projects/rexseo/
  * @link https://github.com/gn2netwerk/rexseo
  *
  * @author dh[at]gn2-netwerk[dot]de Dave Holloway
- * @author code[at]rexdev[dot]de jeandeluxe
+ * @author code[at]rexdev[dot]de jdlx
  *
  * Based on url_rewrite Addon by
  * @author markus.staab[at]redaxo[dot]de Markus Staab
  *
- * @package redaxo4.2.x/4.3.x
- * @version 1.4
- * @version svn:$Id$
+ * @package redaxo4.3.x
+ * @version 1.4.280
  */
 
 // GET PARAMS
@@ -35,7 +33,7 @@ $pagination = 15;
 /////////////////////////////////////////////////////////////////////////////////
 if($func=='batch-submit')
 {
-  $batch = rex_request('redirects','string','false'); 
+  $batch = rex_request('redirects','string','false');
   if($batch!='false')
   {
     $db = new rex_sql;
@@ -140,7 +138,7 @@ if($func == '' || $func=='batch-submit')
   $list->show();
 
   echo '</div>';
-  
+
 // BATCH SUBMIT FORM
 ////////////////////////////////////////////////////////////////////////////////
 echo '
@@ -181,9 +179,9 @@ echo '
   </div><!-- /rex-addon-output -->
 </div><!-- /rex-form -->
 ';
-  
-  
-  
+
+
+
 }
 
 // ADD/EDIT FORM
@@ -236,7 +234,7 @@ elseif($func == 'edit' || $func == 'add')
   {
     $field = &$form->addReadOnlyField('createdate',null,array('class'=>'rex-form-read unix-date'));
     $field->setLabel('Erstellungsdatum');
-  
+
     $field = &$form->addReadOnlyField('updatedate',null,array('class'=>'rex-form-read unix-date'));
     $field->setLabel('Änderungsdatum');
   }
@@ -251,7 +249,7 @@ elseif($func == 'edit' || $func == 'add')
     $field = &$form->addReadOnlyField('creator');
     $field->setLabel('Ersteller');
   }
-   
+
 
   if($func == 'edit')
   {
@@ -298,7 +296,7 @@ jQuery(function($) {
 
 
   jQuery(document).ready(function() {
-  
+
     // MULTILANG LINK BUTTON HACK
     $('p.rex-widget-icons').replaceWith($('p#clang-link-buttons'));
 

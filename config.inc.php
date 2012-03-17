@@ -1,19 +1,17 @@
 <?php
 /**
- * RexSEO Addon
+ * RexSEO - URLRewriter Addon
  *
- * @link http://gn2-code.de/projects/rexseo/
  * @link https://github.com/gn2netwerk/rexseo
  *
  * @author dh[at]gn2-netwerk[dot]de Dave Holloway
- * @author code[at]rexdev[dot]de jeandeluxe
+ * @author code[at]rexdev[dot]de jdlx
  *
  * Based on url_rewrite Addon by
  * @author markus.staab[at]redaxo[dot]de Markus Staab
  *
  * @package redaxo4.3.x
- * @version 1.4
- * @version svn:$Id$
+ * @version 1.4.280
  */
 
 // ADDON PARAMS
@@ -21,18 +19,17 @@
 $myself = 'rexseo';
 $myroot = $REX['INCLUDE_PATH'].'/addons/'.$myself;
 
-$Revision = '';
 $REX['ADDON'][$myself]['VERSION'] = array
 (
 'VERSION'      => 1,
 'MINORVERSION' => 4,
-'SUBVERSION'   => preg_replace('/[^0-9]/','',"$Revision$")
+'SUBVERSION'   => 280,
 );
 
 $REX['ADDON']['rxid'][$myself]        = '750';
 $REX['ADDON']['name'][$myself]        = 'RexSEO';
 $REX['ADDON']['version'][$myself]     = implode('.', $REX['ADDON'][$myself]['VERSION']);
-$REX['ADDON']['author'][$myself]      = 'Markus Staab, Wolfgang Huttegger, Dave Holloway, Jan Kristinus, jeandeluxe';
+$REX['ADDON']['author'][$myself]      = 'Markus Staab, Wolfgang Huttegger, Dave Holloway, Jan Kristinus, jdlx';
 $REX['ADDON']['supportpage'][$myself] = 'forum.redaxo.de';
 $REX['ADDON']['perm'][$myself]        = $myself.'[]';
 $REX['PERM'][]                        = $myself.'[]';
