@@ -75,7 +75,8 @@ if ($func == 'update')
   $config = $REX['INCLUDE_PATH'].'/addons/'.$myself.'/config.inc.php';
   rex_replace_dynamic_contents($config, $DYN);
   rex_replace_dynamic_contents($backup, $DYN);
-  echo rex_info('Einstellungen wurden gespeichert, '.rex_generateAll().'.');
+  rexseo_purgeCacheFiles();
+  echo rex_info('Einstellungen wurden gespeichert.');
 }
 
 
