@@ -205,6 +205,14 @@ class RexseoRewrite
       return $params['subject'];
     }
 
+
+    // EP "REXSEO_PRE_REWRITE"
+    $url = rex_register_extension_point('REXSEO_PRE_REWRITE', false, $params);
+    if($url !== false)
+    {
+      return $url;
+    }
+
     global $REX, $REXSEO_IDS;
 
     $id             = $params['id'];
@@ -219,11 +227,14 @@ class RexseoRewrite
     // GET URL FROM PATHLIST AND APPEND PARAMS
     if(isset($REXSEO_IDS[$id]) && isset($REXSEO_IDS[$id][$clang]))
     {
-      $url = $REXSEO_IDS[$id][$clang]['url'].$urlparams;
+      $base_url = $REXSEO_IDS[$id][$clang]['url'];
+      $url      = $base_url.$urlparams;
+      $notfound = false;
     }
     else
     {
-      $url   = $REXSEO_IDS[$notfound_id][$clang]['url'];
+      $url = $base_url = $REXSEO_IDS[$notfound_id][$clang]['url'];
+      $notfound = true;
 
       if($REX['ADDON']['rexseo']['debug_log']==1)
       {
@@ -241,10 +252,26 @@ class RexseoRewrite
       $url = ' ';
     }
 
-    // INCLUDE SUBDIR BECAUSE rex_redirect() DOESN'T KNOW <base href="" />
     // str_replace fixes a caching bug that appears while updating specific
     // modules/slices in the redaxo backend
-    return str_replace('/redaxo/','/',$subdir.$url);
+    $url = str_replace('/redaxo/','/',$subdir.$url);
+
+
+    // EP "REXSEO_POST_REWRITE"
+    $ep_params = array('article_id'     => $id,
+                       'clang'          => $clang,
+                       'notfound'       => $notfound,
+                       'base_url'       => $base_url,
+                       'subdir'         => $subdir,
+                       'urlparams'      => $urlparams,
+                       'params'         => $params['params'],
+                       'divider'        => $params['divider'],
+                       'params_starter' => $REX['ADDON']['rexseo']['settings']['params_starter'],
+                       'urlencode'      => $REX['ADDON']['rexseo']['settings']['urlencode'],
+                       );
+    $url = rex_register_extension_point('REXSEO_POST_REWRITE', $url, $ep_params);
+
+    return $url;
   }
 
 
