@@ -11,7 +11,7 @@
  * @author markus.staab[at]redaxo[dot]de Markus Staab
  *
  * @package redaxo4.3.x
- * @version 1.4.282-dev
+ * @version 1.4.283-dev
  */
 
 class rexseo_sitemap
