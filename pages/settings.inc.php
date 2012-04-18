@@ -84,7 +84,7 @@ if ($func == 'update')
 ////////////////////////////////////////////////////////////////////////////////
 if($REX['ADDON'][$myself]['settings']['alert_setup'] == 1)
 {
-  echo rex_warning('HINWEIS: Das Addon ist noch nicht einsatzbereit!<br /> Es m&uuml;ssen noch Anpassungen vorgenommen werden die im Kapitel <a href="index.php?page=rexseo&subpage=help&chapter=&func=setup_alert_disable&highlight=Quickstart">Quickstart</a> der Hilfe beschrieben sind');
+  echo rex_warning('WICHTIG: RexSEO erfordert f&uuml;r den Betrieb zwingend Anpassungen, die im Kapitel <a href="index.php?page=rexseo&subpage=help&chapter=&func=setup_alert_disable&highlight=Quickstart">Quickstart</a> der Hilfe beschrieben sind. <em>(Diese Meldung verschwindet - unabh&auml;ngig davon ob RexSEO schonmal installiert war - erst wenn die Quickstart Seite einmal aufgesucht wurde.)</em>');
 
   $subdir = rexseo_subdir();
   if($subdir != '')
