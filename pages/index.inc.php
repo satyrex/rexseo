@@ -51,7 +51,9 @@ require_once $myroot.'/classes/class.github_connect.inc.php';
 require_once $myroot.'/functions/function.rexseo_helpers.inc.php';
 require_once $myroot.'/classes/class.rexseo_select.inc.php';
 require_once $myroot.'/classes/class.rexseo_rewrite.inc.php';
-require_once $myroot.'/classes/class.rex_socket.inc.php';
+if(!class_exists('rex_socket')) {
+  require_once $myroot.'/classes/class.rex_socket.inc.php';
+}
 
 // REX TOP
 ////////////////////////////////////////////////////////////////////////////////
