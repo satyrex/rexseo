@@ -55,6 +55,12 @@ class github_connect
       case'fopen':
         $response = file_get_contents($url, 'r');
       break;
+
+      case'socket':
+        $socket = rex_socket::createByUrl($url);
+        $socket->doGet();
+        $response = $socket->getBody();
+      break;
     }
 
     $this->api_response = json_decode($response);
@@ -68,6 +74,7 @@ class github_connect
 
     $this->access_method = ini_get('allow_url_fopen')   ? 'fopen' : false;
     $this->access_method = function_exists('curl_init') ? 'curl'  : false;
+    $this->access_method = class_exists('rex_socket')   ? 'socket': false;
 
     $this->error = $this->access_method==false ? 'no access method available' : false;
 
