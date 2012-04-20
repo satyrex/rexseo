@@ -73,8 +73,8 @@ class github_connect
     global $REX;
 
     $this->access_method = ini_get('allow_url_fopen')   ? 'fopen' : false;
-    $this->access_method = function_exists('curl_init') ? 'curl'  : false;
-    $this->access_method = class_exists('rex_socket')   ? 'socket': false;
+    $this->access_method = function_exists('curl_init') ? 'curl'  : $this->access_method;
+    $this->access_method = class_exists('rex_socket')   ? 'socket': $this->access_method;
 
     $this->error = $this->access_method==false ? 'no access method available' : false;
 
