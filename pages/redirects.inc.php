@@ -271,18 +271,18 @@ elseif($func == 'edit' || $func == 'add')
 <div id="clang-hack" clang="" article_id="" style="/*display:none*/">
 <p id="clang-link-buttons" class="rex-widget-icons rex-widget-1col">
   <span class="rex-widget-column rex-widget-column-first">
-  <span style="float:left;margin-top:3px;">clang:</span>
+  <span style="float:left;margin-top:3px;">Sprache:</span>
   ';
 
 foreach($REX['CLANG'] as $id=>$name)
 {
   $add_css = $stored_clang==$id ? ' current':'';
-  echo '  <a tabindex="35" title="Link auswählen" clang="'.$id.'" onclick="openLinkMap(\'LINK_1\', \'&amp;clang='.$id.'&amp;category_id=0\');return false;" class="rex-icon-file-open open-clang-linkmap'.$add_css.'" href="#">'.$id.'</a>
+  echo '  <a tabindex="35" title="'.$name.'" clang="'.$id.'" onclick="openLinkMap(\'LINK_1\', \'&amp;clang='.$id.'&amp;category_id=0\');return false;" class="rex-icon-file-open open-clang-linkmap'.$add_css.'" href="#">'.$id.'</a>
 ';
 }
 
 echo '
-  <a tabindex="36" title="Ausgewählten Link löschen" onclick="deleteREXLink(1);return false;" class="rex-icon-file-delete" href="#"></a>
+  <a tabindex="36" title="Ausgew&auml;hlten Link l&ouml;schen" onclick="deleteREXLink(1);return false;" class="rex-icon-file-delete" href="#"></a>
   </span>
   </p>
 </div>
