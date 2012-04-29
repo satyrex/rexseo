@@ -515,6 +515,7 @@ Bitte die .htaccess auf korrektes redirects delimiter Paar überprüfen.<br />
   return false;
 }
 
+
 // UPDATE REDIRECT STATUS OR DELETE
 ////////////////////////////////////////////////////////////////////////////////
 function rexseo_update_redirect($id,$status=2,$func='update')
@@ -535,4 +536,53 @@ function rexseo_update_redirect($id,$status=2,$func='update')
     $qry = 'UPDATE `'.$table.'` SET `status`='.$status.' WHERE `id`='.$id.';';  #FB::log($qry,'$qry');FB::groupEnd();
     return $db->setQuery($qry);
   }
+}
+
+
+// SETUP/REPAIR REXSEO'S METAINFOS
+////////////////////////////////////////////////////////////////////////////////
+function rexseo_setup_metainfo()
+{
+  global $REX;
+
+  $install_metas = array(
+    'art_rexseo_legend'         => array('RexSEO Rewrite',              'art_rexseo_legend',        100,    '',         12,     '',       '',                                                                                                     '',               ''),
+    'art_rexseo_url'            => array('Custom URL',                  'art_rexseo_url',           101,    '',          1,     '',       '',                                                                                                     '',               ''),
+    'art_rexseo_canonicalurl'   => array('Custom Canonical URL',        'art_rexseo_canonicalurl',  102,    '',          1,     '',       '',                                                                                                     '',               ''),
+    'art_rexseo_title'          => array('Custom Page Title',           'art_rexseo_title',         103,    '',          1,     '',       '',                                                                                                     '',               ''),
+    'art_rexseo_sitemap_legend' => array('RexSEO Sitemap',              'art_rexseo_sitemap_legend',104,    '',         12,     '',       '',                                                                                                     '',               ''),
+    'art_rexseo_priority'       => array('Sitemap Priority',            'art_rexseo_priority',      105,    '',          3,     '',       ':auto|1.00:1.00|0.80:0.80|0.64:0.64|0.51:0.51|0.33:0.33|0.00:0.00',                                    '',               ''),
+    'art_rexseo_changefreq'     => array('Sitemap Changefreq',          'art_rexseo_changefreq',    105,    '',          3,     '',       ':auto|never:never|yearly:yearly|monthly:monthly|weekly:weekly|daily:daily|hourly:hourly|always:always','',               ''),
+    'art_rexseo_sitemap_out'    => array('Sitemap Output',              'art_rexseo_sitemap_out',   106,    '',          3,     '',       ':auto|show:show|hide:hide',                                                                            '',               ''),
+    );
+
+  $db = new rex_sql;
+  foreach($db->getDbArray('SHOW COLUMNS FROM `rex_article` LIKE \'art_rexseo_%\';') as $column)
+  {
+    unset($install_metas[$column['Field']]);
+  }
+
+  foreach($install_metas as $k => $v)
+  {
+    $db->setQuery('SELECT `name` FROM `rex_62_params` WHERE `name`=\''.$k.'\';');
+
+    if($db->getRows()>0)
+    {
+      // FIELD KNOWN TO METAINFO BUT MISSING IN ARTICLE..
+      $db->setQuery('ALTER TABLE `rex_article` ADD `'.$k.'` TEXT NOT NULL;');
+      if($REX['REDAXO'])
+      {
+        echo rex_info('Metainfo Feld '.$k.' wurde repariert.');
+      }
+    }
+    else
+    {
+      a62_add_field($v[0], $v[1], $v[2], $v[3], $v[4], $v[5], $v[6], $v[7], $v[8]);
+      if($REX['REDAXO'])
+      {
+        echo rex_info('Metainfo Feld '.$k.' wurde angelegt.');
+      }
+    }
+  }
+
 }

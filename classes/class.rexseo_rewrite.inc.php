@@ -494,11 +494,18 @@ function rexseo_generate_pathlist($params)
   {
     $db = new rex_sql();
 
-     // revision fix
+     // REVISION FIX
     $db->setQuery('UPDATE '. $REX['TABLE_PREFIX'] .'article SET revision = 0 WHERE revision IS NULL;');
     $db->setQuery('UPDATE '. $REX['TABLE_PREFIX'] .'article_slice SET revision = 0 WHERE revision IS NULL;');
 
     $db->setQuery('SELECT `id`, `clang`, `path`, `startpage`,`art_rexseo_url` FROM '. $REX['TABLE_PREFIX'] .'article WHERE '. $where.' AND revision=0 OR revision IS NULL');
+
+    // CHECK & REPAIR DORKED METAINFO
+    if($db->hasError() && $db->getErrno()==1054)
+    {
+      rexseo_setup_metainfo();
+      $db->setQuery('SELECT `id`, `clang`, `path`, `startpage`,`art_rexseo_url` FROM '. $REX['TABLE_PREFIX'] .'article WHERE '. $where.' AND revision=0 OR revision IS NULL');
+    }
 
     while($db->hasNext())
     {
