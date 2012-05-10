@@ -351,6 +351,9 @@ echo '
 
 foreach ($REX['CLANG'] as $id => $str)
 {
+  $def_desc = isset($REX['ADDON'][$myself]['settings']['def_desc'][$id]) ? stripslashes($REX['ADDON'][$myself]['settings']['def_desc'][$id]) : '';
+  $def_keys = isset($REX['ADDON'][$myself]['settings']['def_keys'][$id]) ? stripslashes($REX['ADDON'][$myself]['settings']['def_keys'][$id]) : '';
+
   echo '
     <fieldset class="rex-form-col-1">
       <legend>Meta Defaults ('.$str.')</legend>
@@ -359,7 +362,7 @@ foreach ($REX['CLANG'] as $id => $str)
         <div class="rex-form-row">
           <p class="rex-form-col-a rex-form-select">
           <label for="def_desc" class="helptopic">Description:<br /><br /><em style="color:gray;font-size:10px;">z.B. My super description</em></label>
-            <textarea id="def_desc_'.$id.'" name="def_desc['.$id.']">'.stripslashes($REX['ADDON'][$myself]['settings']['def_desc'][$id]).'</textarea>
+            <textarea id="def_desc_'.$id.'" name="def_desc['.$id.']">'.$def_desc.'</textarea>
 
           </p>
         </div><!-- /rex-form-row -->
@@ -367,7 +370,7 @@ foreach ($REX['CLANG'] as $id => $str)
         <div class="rex-form-row">
           <p class="rex-form-col-a rex-form-select">
             <label for="def_keys" class="helptopic">Keywords:<br /><br /><em style="color:gray;font-size:10px;">z.B. My, list, of, keywords</em></label>
-            <textarea id="def_keys_'.$id.'" name="def_keys['.$id.']">'.stripslashes($REX['ADDON'][$myself]['settings']['def_keys'][$id]).'</textarea>
+            <textarea id="def_keys_'.$id.'" name="def_keys['.$id.']">'.$def_keys.'</textarea>
           </p>
         </div><!-- /rex-form-row -->
 
