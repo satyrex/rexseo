@@ -106,19 +106,11 @@ if($db->getRows()==0)
 
 if(count($error)==0)
 {
+  require_once $myroot.'/functions/function.rexseo_helpers.inc.php';
+
   // SETUP METAINFO
   //////////////////////////////////////////////////////////////////////////////
-    // 4.3.x -> zusätzliches Feld "restrictions" (http://forum.redaxo.de/sutra80188.html#80188 -> erst ab metainfo r1871)
-    //a62_add_field( $title,                        $name,                      $prior, $attributes, $type, $default, $params = null,                                                                                         $validate = null, $restrictions = '')
-      a62_add_field( 'RexSEO Rewrite',              'art_rexseo_legend',        100,    '',         12,     '',       '',                                                                                                     '',               '');
-      a62_add_field( 'Custom URL',                  'art_rexseo_url',           101,    '',          1,     '',       '',                                                                                                     '',               '');
-      a62_add_field( 'Custom Canonical URL',        'art_rexseo_canonicalurl',  102,    '',          1,     '',       '',                                                                                                     '',               '');
-      a62_add_field( 'Custom Page Title',           'art_rexseo_title',         103,    '',          1,     '',       '',                                                                                                     '',               '');
-      a62_add_field( 'RexSEO Sitemap',              'art_rexseo_sitemap_legend',104,    '',         12,     '',       '',                                                                                                     '',               '');
-      a62_add_field( 'Sitemap Priority',            'art_rexseo_priority',      105,    '',          3,     '',       ':auto|1.00:1.00|0.80:0.80|0.64:0.64|0.51:0.51|0.33:0.33|0.00:0.00',                                    '',               '');
-      a62_add_field( 'Sitemap Changefreq',          'art_rexseo_changefreq',    105,    '',          3,     '',       ':auto|never:never|yearly:yearly|monthly:monthly|weekly:weekly|daily:daily|hourly:hourly|always:always','',               '');
-      a62_add_field( 'Sitemap Output',              'art_rexseo_sitemap_out',   106,    '',          3,     '',       ':auto|show:show|hide:hide',                                                                            '',               '');
-
+  rexseo_setup_metainfo();
 
 
   // CHECK ROOT .HTACCESS FILE FOR CRITICAL SETTINGS
@@ -155,7 +147,6 @@ if(count($error)==0)
   //////////////////////////////////////////////////////////////////////////////
   if($autoinstall)
   {
-    require_once $myroot.'/functions/function.rexseo_helpers.inc.php';
     $source = $REX['INCLUDE_PATH'].'/addons/'.$myself.'/install/files/';
     $target = $REX['HTDOCS_PATH'];
     $result = rexseo_recursive_copy($source, $target);
