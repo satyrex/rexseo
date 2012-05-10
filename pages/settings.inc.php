@@ -55,7 +55,7 @@ rexseo_htaccess_update_redirects();
 
 // CHECK METAINFO
 //////////////////////////////////////////////////////////////////////////////
-#rexseo_setup_metainfo();
+rexseo_setup_metainfo();
 
 
 // UPDATE/SAVE SETTINGS
