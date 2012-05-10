@@ -40,17 +40,14 @@ span.jsopenwin {
   padding:2px 8px 8px 8px;
   line-height:1.3;
   }
-
 .rexseo p {
   font-size:12px;
   margin:0 0 20px 0;
   }
-
 .rexseo .rex-warning p {
   font-size:10px;
   margin:0;
   }
-
 .rexseo h1 {
   color:#14568A;
   font-size:18px;
@@ -58,36 +55,30 @@ span.jsopenwin {
   margin:26px 0 10px 0;
   padding:0 0 2px 0;
   }
-
 .rexseo h1:first-child,
 .rexseo #setup h1:first-child{
   margin:0 0 10px 0;
   }
-
 .rexseo h2 {
   font-size:14px;
   margin:2px 0 10px 0;
   padding:0;
   }
-
 .rexseo h3 {
   font-size:13px;
   margin:2px 0 10px 0;
   padding:0;
   }
-
 .rexseo h4 {
   font-size:12px;
   margin:2px 0 10px 0;
   padding:0;
   }
-
 .rexseo h5 {
   font-size:11px;
   margin:2px 0 10px 0;
   padding:0;
   }
-
 .rexseo cite,
 .rexseo code,
 .rexseo pre {
@@ -96,7 +87,6 @@ span.jsopenwin {
   font-style:normal;
   font-size:12px;
   }
-
 .rexseo pre {
   overflow:auto;
   border:1px solid #CBCBCB;
@@ -106,11 +96,9 @@ span.jsopenwin {
   line-height:12px;
   max-height:500px;
   }
-
 .rexseo pre code {
   color:#0000BB;
-}
-
+  }
 .rexseo hr {
   height:1px;
   border:0;
@@ -118,12 +106,10 @@ span.jsopenwin {
   margin:8px 0;
   padding:0;
   }
-
 .rexseo ul {
   margin:0;
   padding:0;
   }
-
 .rexseo ul>li {
   line-height:1.4;
   background:#DFE9E9;
@@ -135,7 +121,6 @@ span.jsopenwin {
   -moz-border-radius:4px;
   -border-radius:4px;
   }
-
 .rexseo ul>li>strong:first-child {
   font-size:14px;
   display:inline-block;
@@ -143,20 +128,17 @@ span.jsopenwin {
   border-bottom:1px solid #CBCBCB;
   margin-bottom:4px;
   }
-
 .rexseo ol ul>li>strong:first-child,
 .rexseo ul ul>li>strong:first-child {
   font-size:12px;
   display:inline;
   border-bottom:0;
   }
-
 .rexseo ul ul>li {
   list-style-type:disc;
   border:0;
   padding:2px;
   }
-
 .rexseo a.rex-form-submit,
 .rexseo a.rex-form-submit:link,
 .rexseo a.rex-form-submit:visited,
@@ -169,21 +151,18 @@ span.jsopenwin {
   border:0 none;
   outline:1px solid #CBCBCB;
   }
-
 #rexseo_robots {
   /*height:100px;*/
-}
-
+  }
 #rexseo_redirects {
   /*height:100px;*/
-}
+  }
 .rexseo_ticket {
   margin:2px 0 2px 0;
-}
+  }
 .rexseo_ticket .rexseo_date {
   margin-right:15px;
-}
-
+  }
 a.help-icon {
   background:silver !important;
   color:white !important;
@@ -193,14 +172,10 @@ a.help-icon {
   padding:0 4px 0 4px !important;
   -moz-border-radius:5px !important;
   -webkit-border-radius:5px !important;
-}
-
+  }
 a.help-icon:hover {
   background:#3C9ED0 !important;
-}
-
-
-
+  }
 .rexseo .highlight {
   background-color: yellow !important;
   color:black !important;
@@ -211,14 +186,11 @@ a.help-icon:hover {
   border-bottom:1px solid gray;
   -moz-border-radius:3px;
   -webkit-border-radius:3px;
-
-}
-
+  }
 ul#rexseo-redirect-list {
   margin-left:155px;
   list-style-type:none;
-}
-
+  }
 table#rexseo-redirect-list {
  /* -moz-outline-radius: 4px 4px 4px 4px;
   border: 0 none;
@@ -227,17 +199,14 @@ table#rexseo-redirect-list {
   margin:0;
   padding:0;
   width:100%;
-}
-
+  }
 table#rexseo-redirect-list td,
 table#rexseo-redirect-list th {
   padding:4px;
-}
-
+  }
 table#rexseo-redirect-list th {
   color:gray;
-}
-
+  }
 table#rexseo-redirect-list span.redirect-btn {
   display:inline-block;
   width:70px;
@@ -247,30 +216,26 @@ table#rexseo-redirect-list span.redirect-btn {
   -moz-outline-radius: 4px 4px 4px 4px;
   border: 0 none;
   outline: 1px solid #CBCBCB;
-}
-
+  }
 table#rexseo-redirect-list span.redirect-btn.active {
   color:#107C2C;
-}
-
+  }
 table#rexseo-redirect-list span.redirect-btn.inactive {
   color:#EA1144;
-}
+  }
 
-/*REDMINE RSS*/
-
-.rexseo ul.redmine-feed {
+/*GITHUB API*/
+.rexseo ul.github-api {
   list-style-type:none;
-}
-
-.rexseo ul.redmine-feed li {
+  }
+.rexseo ul.github-api li {
   background:none;
   border:0;
   padding:0;
-}
-.rexseo ul.redmine-feed .redmine-date {
+  }
+.rexseo ul.github-api .github-date {
   margin-right:15px;
-}
+  }
 
 /*MULTI-CLANG LINKMAP HACK*/
 div.rex-widget p.rex-widget-icons a.open-clang-linkmap {

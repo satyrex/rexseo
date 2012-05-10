@@ -68,7 +68,7 @@ class github_connect
 
 
   /* constructor */
-  public function github_connect($repo_owner=false, $repo_name=false)
+  public function __construct($repo_owner=false, $repo_name=false)
   {
     global $REX;
 
@@ -145,16 +145,33 @@ class github_connect
       }
 
       $this->getApiResponse($this->api_baseurl.$type);
-      $list_items = '';
+
+      switch($type)
+      {
+        case 'downloads':
+            $head  = '<h1>Downloads: <a class="jsopenwin" target="_blank" href="'.$this->html_baseurl.'downloads">'.$this->html_baseurl.'downloads</a></h1>';
+        break;
+
+        case 'issues':
+            $head  = '<h1>Issues: <a class="jsopenwin" target="_blank" href="'.$this->html_baseurl.'issues">'.$this->html_baseurl.'issues</a></h1>';
+        break;
+
+        case 'commits':
+            $head  = '<h1>Commits: <a class="jsopenwin" target="_blank" href="'.$this->html_baseurl.'commits">'.$this->html_baseurl.'commits</a></h1>';
+        break;
+      }
+
+      $list_items = '<li>no entries</li>';
 
       if(count($this->api_response)>0)
       {
+        $list_items = '';
+
         foreach($this->api_response as $item)
         {
           switch($type)
           {
             case 'downloads':
-                $head  = '<h1>Downloads: <a class="jsopenwin" target="_blank" href="'.$this->html_baseurl.'downloads">'.$this->html_baseurl.'downloads</a></h1>';
                 $date  = '<strong>'.date('d.m.Y',strtotime($item->created_at)).'</strong> '.date('H:i',strtotime($item->created_at));
                 $href  = $item->html_url;
                 $title = $item->name;
@@ -163,7 +180,6 @@ class github_connect
             break;
 
             case 'issues':
-                $head  = '<h1>Issues: <a class="jsopenwin" target="_blank" href="'.$this->html_baseurl.'issues">'.$this->html_baseurl.'issues</a></h1>';
                 $date  = '<strong>'.date('d.m.Y',strtotime($item->created_at)).'</strong> '.date('H:i',strtotime($item->created_at));
                 $href  = $item->html_url;
                 $title = $item->title;
@@ -172,7 +188,6 @@ class github_connect
             break;
 
             case 'commits':
-                $head  = '<h1>Commits: <a class="jsopenwin" target="_blank" href="'.$this->html_baseurl.'commits">'.$this->html_baseurl.'commits</a></h1>';
                 $date  = '<strong>'.date('d.m.Y',strtotime($item->commit->committer->date)).'</strong> '.date('H:i',strtotime($item->commit->committer->date));
                 $href  = $this->html_baseurl.'commit/'.$item->sha;
                 $title = preg_replace('/git-svn-id.*/','',$item->commit->message);
@@ -180,12 +195,12 @@ class github_connect
                 $target = 'target="_blank"';
             break;
           }
-          $list_items .= '<li><span class="redmine-date">'.$date.'</span><a class="'.$class.'" '.$target.' href="'.$href.'">'.$title.'</a></li>';
+          $list_items .= '<li><span class="github-date">'.$date.'</span><a class="'.$class.'" '.$target.' href="'.$href.'">'.$title.'</a></li>';
         }
       }
 
       $html = $head;
-      $html .= '<ul class="redmine-feed">';
+      $html .= '<ul class="github-api">';
       $html .= $list_items;
       $html .= '</ul>';
 
