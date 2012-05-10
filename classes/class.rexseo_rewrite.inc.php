@@ -543,7 +543,7 @@ function rexseo_generate_pathlist($params)
             $name = $ooc->getName();
             unset($ooc);
 
-            $pathname = rexseo_appendToPath($pathname, $name);
+            $pathname = rexseo_appendToPath($pathname, $name, $id, $clang);
           }
         }
 
@@ -553,7 +553,7 @@ function rexseo_generate_pathlist($params)
           $ooc = $ooa->getCategory();
           $catname = $ooc->getName();
           unset($ooc);
-          $pathname = rexseo_appendToPath($pathname, $catname);
+          $pathname = rexseo_appendToPath($pathname, $catname, $id, $clang);
         }
 
         if($REX['ADDON']['rexseo']['settings']['url_schema'] == 'rexseo')
@@ -563,7 +563,7 @@ function rexseo_generate_pathlist($params)
           // eigentlicher artikel anhängen
           $name = $ooa->getName();
           unset($ooa);
-          $pathname = rexseo_appendToPath($pathname, $name);
+          $pathname = rexseo_appendToPath($pathname, $name, $id, $clang);
           }
         }
         else
@@ -571,7 +571,7 @@ function rexseo_generate_pathlist($params)
           // eigentlicher artikel anhängen
           $name = $ooa->getName();
           unset($ooa);
-          $pathname = rexseo_appendToPath($pathname, $name);
+          $pathname = rexseo_appendToPath($pathname, $name, $id, $clang);
         }
 
         // ALLGEMEINE URL ENDUNG
@@ -688,7 +688,7 @@ function rexseo_compressPathlist($str)
 }
 
 
-function rexseo_appendToPath($path, $name)
+function rexseo_appendToPath($path, $name, $article_id, $clang)
 {
   global $REX;
 
@@ -696,7 +696,7 @@ function rexseo_appendToPath($path, $name)
   {
     if($REX['ADDON']['rexseo']['settings']['urlencode'] == 0)
     {
-      $name = strtolower(rex_parse_article_name($name));
+      $name = strtolower(rexseo_parse_article_name($name, $article_id, $clang));
       $name = str_replace('+',$REX['ADDON']['rexseo']['settings']['url_whitespace_replace'],$name);
     }
     else
@@ -708,4 +708,54 @@ function rexseo_appendToPath($path, $name)
   }
   return $path;
 }
-?>
+
+
+/**
+* re-implemented from Redaxo core with added EP
+*
+* replaces special chars in article name
+* @param $name       (string) article name
+* @param $article_id (string) article id
+* @param $clang      (string) clang
+*/
+function rexseo_parse_article_name($name, $article_id, $clang)
+{
+  static $firstCall = true;
+  static $translation;
+
+  if($firstCall)
+  {
+    global $REX, $I18N;
+
+    // Im Frontend gibts kein I18N
+    if(!$I18N)
+      $I18N = rex_create_lang($REX['LANG']);
+
+    // Sprachspezifische Sonderzeichen Filtern
+    $translation = array(
+      'search'  => explode('|', $I18N->msg('special_chars')),
+      'replace' => explode('|', $I18N->msg('special_chars_rewrite')),
+      );
+
+    $firstCall = false;
+  }
+
+  // EXTENSION POINT
+  $translation = rex_register_extension_point('REXSEO_SPECIAL_CHARS',$translation,array('article_id'=>$article_id,'clang'=>$clang));
+
+  return
+    // + durch - ersetzen
+    str_replace('+','-',
+        // ggf uebrige zeichen url-codieren
+        urlencode(
+          // mehrfach hintereinander auftretende spaces auf eines reduzieren
+          preg_replace('/ {2,}/',' ',
+            // alle sonderzeichen raus
+            preg_replace('/[^a-zA-Z_\-0-9 ]/', '',
+              // sprachspezifische zeichen umschreiben
+              str_replace($translation['search'], $translation['replace'], $name)
+            )
+          )
+        )
+    );
+}
