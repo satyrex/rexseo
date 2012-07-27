@@ -577,9 +577,13 @@ function rexseo_setup_metainfo()
     }
     else
     {
+      if(!function_exists('a62_add_field')) {
+        require_once($REX['INCLUDE_PATH'].'/addons/metainfo/functions/function_metainfo.inc.php');
+      }
+
       a62_add_field($v[0], $v[1], $v[2], $v[3], $v[4], $v[5], $v[6], $v[7], $v[8]);
-      if($REX['REDAXO'])
-      {
+
+      if($REX['REDAXO']) {
         echo rex_info('Metainfo Feld '.$k.' wurde angelegt.');
       }
     }
