@@ -352,6 +352,9 @@ echo '
     <input type="hidden" name="compress_pathlist"      value="1" />
 ';
 
+if(!isset($REX['ADDON'][$myself]['settings']['default_redirect_expire']))
+  $REX['ADDON'][$myself]['settings']['default_redirect_expire'] = 60;
+
 foreach ($REX['CLANG'] as $id => $str)
 {
   $def_desc = isset($REX['ADDON'][$myself]['settings']['def_desc'][$id]) ? stripslashes($REX['ADDON'][$myself]['settings']['def_desc'][$id]) : '';
