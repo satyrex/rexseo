@@ -65,10 +65,15 @@ $subpage = $subpage=='' ? 'settings' : $subpage; /* 4.2.1 fix: top.php resets $s
 rex_title('RexSEO <span class="addonversion">'.$REX['ADDON']['version'][$myself].'</span>', $REX['ADDON'][$myself]['SUBPAGES']);
 
 // NOTIFY DOWNLOADABLE UPDATE
-$gc = new github_connect('gn2netwerk','rexseo');
-$new_version = $gc->getLatestVersion($REX['ADDON']['version'][$myself],'link');
-if($new_version!='')
-{
+////////////////////////////////////////////////////////////////////////////////
+try {
+  $gc = new github_connect('gn2netwerk','rexseo');
+  $new_version = $gc->getLatestVersion($REX['ADDON']['version'][$myself],'link');
+} catch (Exception $e) {
+  $new_version = '';
+}
+
+if($new_version!='') {
   echo rex_info('Eine neue Version ist als Download verf&uuml;gbar: '.$new_version);
 }
 

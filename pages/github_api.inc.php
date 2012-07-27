@@ -19,5 +19,10 @@ global $REX;
 $myself = 'rexseo';
 $myroot = $REX['INCLUDE_PATH'].'/addons/'.$myself;
 
-$gc = new github_connect('gn2netwerk','rexseo');
-echo $gc->getList(rex_request('chapter', 'string'));
+
+try {
+  $gc = new github_connect('gn2netwerk','rexseo');
+  echo $gc->getList(rex_request('chapter', 'string'));
+} catch (Exception $e) {
+  echo rex_warning($e->getMessage());
+}
