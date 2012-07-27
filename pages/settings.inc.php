@@ -306,6 +306,9 @@ $urlencode_select->setSelected($REX['ADDON'][$myself]['settings']['urlencode']);
 
 // AUTO REDIRECTS SELECT BOX
 ////////////////////////////////////////////////////////////////////////////////
+if (!isset($REX['ADDON'][$myself]['settings']['auto_redirects']))
+  $REX['ADDON'][$myself]['settings']['auto_redirects'] = '';
+
 $auto_redirects_select = new rexseo_select();
 $auto_redirects_select->setSize(1);
 $auto_redirects_select->setName('auto_redirects');
