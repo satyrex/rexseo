@@ -306,6 +306,9 @@ $urlencode_select->setSelected($REX['ADDON'][$myself]['settings']['urlencode']);
 
 // AUTO REDIRECTS SELECT BOX
 ////////////////////////////////////////////////////////////////////////////////
+if (!isset($REX['ADDON'][$myself]['settings']['auto_redirects']))
+  $REX['ADDON'][$myself]['settings']['auto_redirects'] = '';
+
 $auto_redirects_select = new rexseo_select();
 $auto_redirects_select->setSize(1);
 $auto_redirects_select->setName('auto_redirects');
@@ -348,6 +351,9 @@ echo '
     <input type="hidden" name="url_whitespace_replace" value="-" />
     <input type="hidden" name="compress_pathlist"      value="1" />
 ';
+
+if(!isset($REX['ADDON'][$myself]['settings']['default_redirect_expire']))
+  $REX['ADDON'][$myself]['settings']['default_redirect_expire'] = 60;
 
 foreach ($REX['CLANG'] as $id => $str)
 {
