@@ -306,8 +306,9 @@ $urlencode_select->setSelected($REX['ADDON'][$myself]['settings']['urlencode']);
 
 // AUTO REDIRECTS SELECT BOX
 ////////////////////////////////////////////////////////////////////////////////
-if (!isset($REX['ADDON'][$myself]['settings']['auto_redirects']))
-  $REX['ADDON'][$myself]['settings']['auto_redirects'] = '';
+$auto_redirects = !isset($REX['ADDON'][$myself]['settings']['auto_redirects'])
+                ? ''
+                : $REX['ADDON'][$myself]['settings']['auto_redirects'];
 
 $auto_redirects_select = new rexseo_select();
 $auto_redirects_select->setSize(1);
@@ -315,7 +316,7 @@ $auto_redirects_select->setName('auto_redirects');
 $auto_redirects_select->addOption('Inaktiv',0);
 $auto_redirects_select->addOption('Vollautomatisch (Redirects anlegen & aktivieren)',1);
 $auto_redirects_select->addOption('Halbautomatisch (Redirects anlegen aber inaktiv setzen)',2);
-$auto_redirects_select->setSelected($REX['ADDON'][$myself]['settings']['auto_redirects']);
+$auto_redirects_select->setSelected($auto_redirects);
 
 
 
@@ -352,8 +353,9 @@ echo '
     <input type="hidden" name="compress_pathlist"      value="1" />
 ';
 
-if(!isset($REX['ADDON'][$myself]['settings']['default_redirect_expire']))
-  $REX['ADDON'][$myself]['settings']['default_redirect_expire'] = 60;
+$default_redirect_expire = !isset($REX['ADDON'][$myself]['settings']['default_redirect_expire'])
+                         ? 60
+                         : $REX['ADDON'][$myself]['settings']['default_redirect_expire'];
 
 foreach ($REX['CLANG'] as $id => $str)
 {
@@ -482,7 +484,7 @@ echo '
           <div class="rex-form-row">
             <p class="rex-form-col-a rex-form-text">
               <label for="default_redirect_expire" class="helptopic">Default Expire:</label>
-              <input id="default_redirect_expire" class="rex-form-text" style="width:50px;" type="text" name="default_redirect_expire" value="'.stripslashes($REX['ADDON'][$myself]['settings']['default_redirect_expire']).'" /> Tage
+              <input id="default_redirect_expire" class="rex-form-text" style="width:50px;" type="text" name="default_redirect_expire" value="'.stripslashes($default_redirect_expire).'" /> Tage
             </p>
           </div><!-- /rex-form-row -->
 ';

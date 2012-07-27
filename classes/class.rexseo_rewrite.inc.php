@@ -704,8 +704,10 @@ function rexseo_appendToPath($path, $name, $article_id, $clang)
       $name = str_replace('/','-',$name);
       $name = rawurlencode($name);
     }
-    if (substr($name, -1) === '-')
-      $name = substr($name, 0, -1);
+
+    // SANITIZE LAST CHARACTER
+    $name = rtrim($name,'-');
+
     $path .= $name.'/';
   }
   return $path;
@@ -745,8 +747,8 @@ function rexseo_parse_article_name($name, $article_id, $clang)
   // EXTENSION POINT
   $translation = rex_register_extension_point('REXSEO_SPECIAL_CHARS',$translation,array('article_id'=>$article_id,'clang'=>$clang));
 
-  if (substr($name, -1) === '-')
-    $name = substr($name, 0, -1);
+  // SANITIZE LAST CHARACTER
+  $name = rtrim($name,'-');
 
   return
     // + durch - ersetzen
