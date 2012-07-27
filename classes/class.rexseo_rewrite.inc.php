@@ -10,8 +10,8 @@
  * Based on url_rewrite Addon by
  * @author markus.staab[at]redaxo[dot]de Markus Staab
  *
- * @package redaxo4.3.x
- * @version 1.4.284 dev
+ * @package redaxo 4.3.x/4.4.x
+ * @version 1.4.285 dev
  */
 
 define('REXSEO_PATHLIST', $REX['INCLUDE_PATH'].'/generated/files/rexseo_pathlist.php');

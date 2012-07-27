@@ -10,8 +10,8 @@
  * Based on url_rewrite Addon by
  * @author markus.staab[at]redaxo[dot]de Markus Staab
  *
- * @package redaxo4.3.x
- * @version 1.4.284 dev
+ * @package redaxo 4.3.x/4.4.x
+ * @version 1.4.285 dev
  */
 
 // ADDON PARAMS
@@ -23,7 +23,7 @@ $REX['ADDON'][$myself]['VERSION'] = array
 (
 'VERSION'      => 1,
 'MINORVERSION' => 4,
-'SUBVERSION'   => '284 dev',
+'SUBVERSION'   => '285 dev',
 );
 
 $REX['ADDON']['rxid'][$myself]        = '750';

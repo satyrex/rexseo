@@ -10,7 +10,7 @@
  * Based on url_rewrite Addon by
  * @author markus.staab[at]redaxo[dot]de Markus Staab
  *
- * @package redaxo4.3.x
+ * @package redaxo 4.3.x
  * @version 1.4.284 dev
  */
 
